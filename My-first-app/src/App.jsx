@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Header from './components/Header'
-import Toggle from './components/Toggle'
+import LoginRegister from './components/LoginRegister'
 
 function App() {
 
   return (
     <div>
-      <Header></Header>
+      {/* <Header/> */}
+      <LoginRegister/>
     </div>
   )
 }
