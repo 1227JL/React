@@ -4,8 +4,8 @@ import tailwindCSS from '../img/tailwind-css.png';
 
 const LoginRegister = () => {
   return (
-    <div className='flex w-full h-screen items-center bg-red-500'>
-      <form className="bg-blue-400 sm:w-1/2 sm:shadow-md md:w-1/2 md:shadow-md lg:shadow-md lg:w-1/2 w-full mx-auto shadow-none rounded-lg py-10 px-7">
+    <div className='flex w-full h-screen items-center '>
+      <form className="sm:w-1/2 h-screen sm:shadow-md md:w-1/2 md:shadow-md lg:shadow-md lg:w-1/2 w-full mx-auto shadow-none rounded-lg py-10 px-7">
           <div className="flex justify-center">
             <img className="block h-16 w-auto" src={tailwindCSS} alt="Your Company"/>
           </div>
