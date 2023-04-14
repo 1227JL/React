@@ -134,7 +134,7 @@ header h1 {
 .alerta {
     padding: 2rem 5rem;
     max-width: 60rem;
-    margin: 2rem auto 2rem auto;
+    margin: 2rem 0rem ;
     font-weight: 900;
     text-transform: uppercase;
     font-size: 1.8rem;
