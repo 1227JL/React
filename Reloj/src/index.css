@@ -2,14 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-:root{
-    --color: rgb(14 165 233);
+
+.userIcon {
+    height: 64px;
 }
 
-.text-color-p {
-    color: var(--color);
+.sizeHr {
+    width: 98%;
 }
 
-.bg-color-p {
-    background-color: var(--color);
+tr {
+    border-bottom: 2px solid rgba(128, 128, 128, 0.133);
+}
+
+th {
+    border-right: 2px solid rgba(128, 128, 128, 0.133);
+}
+
+td {
+    border-right: 2px solid rgba(128, 128, 128, 0.133);
+}
+
+th:nth-last-child(1){
+    border-right: none;
+}
+
+td:nth-last-child(1){
+    border-right: none;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.modal-bg {
+    background-color: rgba(0, 0, 0, 0.717);
+}
+
+.text-area-size {
+    max-height: 100px;
+}
+
+.br-icon-close-modal {
+    border: 1px solid #D85B53;
+}
+
+.modal .formulario.animar {
+    position: relative;
+    opacity: 1;
+}
+
+.modal .formulario.cerrar {
+    opacity: 0;
+}
+
+.animar {
+    opacity: 1;
+    transition: all 200;
+}
+
+.cerrar {
+    opacity: 0;
+    transition: all 200;
 }

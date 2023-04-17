@@ -1,36 +1,34 @@
 import { useState, useEffect } from "react"
 import Header from "./components/Header"
-import Date from "./components/Date"
-import OyP from "./components/OyP"
-import Menu from "./components/Menu"
-import Perfil from "./components/Perfil"
+import ControlDeDeudas from "./components/ControlDeDeudas"
+import Modal from "./components/Modal"
 
 const App = () => {
 
-  const [validForm, setValidForm] = useState(false)
-  const [menu, setMenu] = useState('')
+  const [modal, setModal] = useState(false)
+  const [animarModal, setAnimarModal] = useState(false)
+
+  const handleNuevaDeuda = ()=>{
+    setModal(!modal)
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      setModal(false)
+    }
+  });
 
   return (
-    <div className="container">
+    <>
       <Header />
-
-      {validForm ? (
-        <div>
-          <Menu
-            menu={menu}
-            setMenu={setMenu}
-          />
-          {menu === 'Perfil' && <Perfil/> }         
-          {menu === 'Registro de Pesos' && <Date/> }                   
-        </div>
-        ):(
-          <OyP
-            validForm={validForm}
-            setValidForm={setValidForm}
-          />
-      )}
-
-    </div>
+      <ControlDeDeudas
+        handleNuevaDeuda={handleNuevaDeuda}
+      />
+      {modal && <Modal
+        modal={modal}
+        setModal={setModal}
+      />}
+    </>
   )
 }
 
