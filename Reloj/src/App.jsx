@@ -5,19 +5,21 @@ import Modal from "./components/Modal"
 
 const App = () => {
 
+  // Modal
   const [modal, setModal] = useState(false)
+
+  // Animación del Modal
   const [animarModal, setAnimarModal] = useState(false)
 
+  // Función que permite crear una nueva deuda
   const handleNuevaDeuda = ()=>{
-    setModal(!modal)
+    setModal(true)
+    setTimeout(()=>{
+      setAnimarModal(true)
+    }, 50)
   }
 
-  document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-      setModal(false)
-    }
-  });
-
+  // Evento que permite cerrar el modal con la letra Escape(27)
   return (
     <>
       <Header />
@@ -27,6 +29,8 @@ const App = () => {
       {modal && <Modal
         modal={modal}
         setModal={setModal}
+        animarModal={animarModal}
+        setAnimarModal={setAnimarModal}
       />}
     </>
   )

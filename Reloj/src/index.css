@@ -56,12 +56,45 @@ tr:nth-child(even) {
     opacity: 0;
 }
 
-.animar {
-    opacity: 1;
-    transition: all 200;
+.modal{
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in;
+    opacity: 0;
 }
 
-.cerrar {
+.modal.on{
+    opacity: 1;
+}
+
+.formModal {
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in;
     opacity: 0;
-    transition: all 200;
+}
+
+.formModal.animar {
+    opacity: 1;
+}
+
+.formModal.cerrar {
+    opacity: 0;
+}
+
+.alerta {
+    padding: 2rem 5rem;
+    max-width: 60rem;
+    margin: 2rem 0rem ;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    text-align: center;
+}
+.alerta.error {
+    background-color: var(--blanco);
+    border-left: 5px solid #b91c1c;
+    color: #b91c1c;
+}
+.alerta.success {
 }
