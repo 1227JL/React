@@ -2,12 +2,14 @@ import { useState, useEffect } from "react"
 import Header from "./components/Header"
 import ControlDeDeudas from "./components/ControlDeDeudas"
 import Modal from "./components/Modal"
+import ModalDeuda from './components/ModalDeuda'
 import { generarId } from './helpers'
 
 const App = () => {
 
   // Modal
   const [modal, setModal] = useState(false)
+  const [modalDeuda, setModalDeuda] = useState(false)
 
   // Animación del Modal
   const [animarModal, setAnimarModal] = useState(false)
@@ -20,8 +22,13 @@ const App = () => {
     }, 50)
   }
 
+  const openModalDeuda = ()=>{
+    setModalDeuda(true)
+  }
+
+
   // State donde se guardaran las deudas almacenadas
-  const [deudas, setDeudas] = useState(localStorage.getItem('gastos') ? JSON.parse(localStorage.getItem('gastos')) : [])
+  const [deudas, setDeudas] = useState(localStorage.getItem('deudas') ? JSON.parse(localStorage.getItem('deudas')) : [])
 
   
   useEffect(()=>{
@@ -54,6 +61,9 @@ const App = () => {
       <ControlDeDeudas
         handleNuevaDeuda={handleNuevaDeuda}
         deudas={deudas}
+        modalDeuda={modalDeuda}
+        setModalDeuda={setModalDeuda}
+        openModalDeuda={openModalDeuda}
       />
       {modal && <Modal
         modal={modal}
@@ -62,6 +72,7 @@ const App = () => {
         setAnimarModal={setAnimarModal}
         guardarDeuda={guardarDeuda}
       />}
+      {modalDeuda && <ModalDeuda/>}
     </>
   )
 }

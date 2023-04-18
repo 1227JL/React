@@ -1,8 +1,9 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
-const Deuda = ({deuda}) => {
+const Deuda = ({deuda, openModalDeuda}) => {
 
   const {nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha} = deuda
+
 
   return (
     <>
@@ -13,8 +14,14 @@ const Deuda = ({deuda}) => {
             <td>{telefono}</td>
             <td>{correo}</td>
             <td>{estado}</td>
-            <td className='p-2'><button className='bg-blue-500 p-1 px-6 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300'>Ver Deuda</button></td>
+            <td className='p-2'>
+              <button
+                onClick={openModalDeuda}
+                className='bg-blue-500 p-1 px-6 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300'>Ver Deuda
+              </button>
+            </td>
         </tr>
+        
     </>
   )
 }
