@@ -10,6 +10,7 @@ const App = () => {
   // Modal
   const [modal, setModal] = useState(false)
   const [modalDeuda, setModalDeuda] = useState(false)
+  const [menu, setMenu] = useState('')
 
   // Animación del Modal
   const [animarModal, setAnimarModal] = useState(false)
@@ -72,7 +73,7 @@ const App = () => {
         setAnimarModal={setAnimarModal}
         guardarDeuda={guardarDeuda}
       />}
-      {modalDeuda && <ModalDeuda/>}
+      {modalDeuda && <ModalDeuda menu={menu} setMenu={setMenu}/>}
     </>
   )
 }

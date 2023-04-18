@@ -53,7 +53,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
 
   return (
     <div className={`h-full justify-center flex flex-col fixed top-0 z-10 modal-bg w-screen items-center modal ${modal && 'on'}`}>
-        <div className={`div-modal bg-white w-2/3 h-4/4 px-5 py-5 mx-auto rounded-md shadow-xl shadow-gray-800  formModal ${animarModal ? 'animar' : 'cerrar'}`}>
+        <div className={`div-modal bg-white w-2/3 h-modal px-5 py-5 mx-auto rounded-md shadow-xl shadow-gray-800  formModal ${animarModal ? 'animar' : 'cerrar'}`}>
             <div className='w-full h-10 flex justify-end mb-7 pl-11'>
                 <h1 className='font-bold text-4xl uppercase mx-auto'>Deuda</h1>
                 {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
@@ -65,7 +65,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
                     />
             </div>
             <form className='grid grid-cols-2 w-full gap-5 px-5' action="" onSubmit={handleFormSubmit}>
-            <div className="mb-5">
+            <div className="mb-2">
             <label htmlFor="nombre" className="block text-gray-700 uppercase font-bold">
               Nombre
             </label>
@@ -78,7 +78,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setNombre(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="apellido" className="block text-gray-700 uppercase font-bold">
               Apellido
             </label>
@@ -91,7 +91,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setApellido(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="identificacion"className="block text-gray-700 uppercase font-bold">
               Identificación
             </label>
@@ -103,7 +103,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setIdentificacion(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="correo"className="block text-gray-700 uppercase font-bold">
               Correo eléctronico
             </label>
@@ -115,7 +115,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setCorreo(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="telefono"className="block text-gray-700 uppercase font-bold">
               télefono
             </label>
@@ -127,7 +127,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setTelefono(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="valor"className="block text-gray-700 uppercase font-bold">
               valor
             </label>
@@ -139,7 +139,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setValor(e.target.value)}
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="interes"className="block text-gray-700 uppercase font-bold">
               Tasa de interes
             </label>
@@ -154,7 +154,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
               <span className='font-bold text-2xl'>%</span>
             </div>
           </div>
-          <div className="mb-5">
+          <div className="mb-2">
             <label htmlFor="cuotas"className="block text-gray-700 uppercase font-bold">
               Número de Cuotas
             </label>
@@ -166,7 +166,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             onChange={ e => setCuotas(e.target.value)}
             />
           </div>
-          <div className="mb-5 col-span-2">
+          <div className="mb-2 col-span-2">
             <label htmlFor="descripcion"className="block text-gray-700 uppercase font-bold">
               Descripción
             </label>
@@ -178,9 +178,6 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
               onChange={ e => setDescripcion(e.target.value)}
             />
           </div>
-            <button
-                className='col-span-2 uppercase bg-red-500 border-2 border-red-500 p-3 text-white font-semibold shadow-md transition duration-300 hover:bg-transparent hover:text-red-500 hover:border-2 rounded-md'>Deuda Finalizada
-            </button>
           <input 
             type="submit"
             value='Registrar Deuda'
