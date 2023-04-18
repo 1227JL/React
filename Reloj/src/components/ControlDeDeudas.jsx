@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Deuda from './Deuda.jsx'
 
-const ControlDeDeudas = ({handleNuevaDeuda}) => {
+const ControlDeDeudas = ({handleNuevaDeuda, deudas}) => {
 
   return (
     <div className='mt-10'>
@@ -62,7 +62,12 @@ const ControlDeDeudas = ({handleNuevaDeuda}) => {
                         </tr>
                     </thead>
                     <tbody className='bg-white rounded-md p-10 text-center'>
-                        <Deuda/>
+                        {deudas.map(deuda =>(
+                            <Deuda
+                                key={deuda.id}
+                                deuda={deuda}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div>

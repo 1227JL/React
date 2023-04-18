@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import iconCloseModal from '../img/close.png'
 import Mensaje from "./Mensaje"
 
-const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
+const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => {
 
   const [mensaje, setMensaje] = useState('')
   const [nombre, setNombre] = useState('')
@@ -14,6 +14,9 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
   const [interes, setInteres] = useState('')
   const [cuotas, setCuotas] = useState('')
   const [descripcion, setDescripcion] = useState('')
+  const [estado, setEstado] = useState('Pendiente')
+  const [fecha, setFecha] = useState('')
+  const [id, setId] = useState('')
   
   
   const closeModal = () => {
@@ -35,21 +38,21 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
   
   const handleFormSubmit = (event) => {
       event.preventDefault()
-  
+      console.log("Enviado");
+      
       if ([nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion].includes('')) {
-          setMensaje('Todos los campos son obligatorios')
-          setTimeout(() => {
-              setMensaje('')
-          }, 3000)
-      } else {
-          // aquí se pueden enviar los datos del formulario a través de una función prop
-          console.log({ nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion })
-          closeModal()
+        setMensaje('Todos los campos son obligatorios')
+        setTimeout(() => {
+            setMensaje('')
+        }, 3000);
+        return
       }
+
+      guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   }
 
   return (
-    <div className={`h-screen justify-center flex flex-col absolute top-0 z-10 modal-bg w-screen items-center modal ${modal && 'on'}`}>
+    <div className={`h-full justify-center flex flex-col fixed top-0 z-10 modal-bg w-screen items-center modal ${modal && 'on'}`}>
         <div className={`div-modal bg-white w-2/3 h-4/4 px-5 py-5 mx-auto rounded-md shadow-xl shadow-gray-800  formModal ${animarModal ? 'animar' : 'cerrar'}`}>
             <div className='w-full h-10 flex justify-end mb-7 pl-11'>
                 <h1 className='font-bold text-4xl uppercase mx-auto'>Deuda</h1>
@@ -71,6 +74,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="text"
             placeholder="Nombre del Deudor"
+            value={nombre}
+            onChange={ e => setNombre(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -82,6 +87,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="text"
             placeholder="Apellido del Deudor"
+            value={apellido}
+            onChange={ e => setApellido(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -92,6 +99,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="number"
             placeholder="Número de Identificacion"
+            value={identificacion}
+            onChange={ e => setIdentificacion(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -101,7 +110,9 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             <input id="correo"
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="email"
-            placeholder="Número de Identificacion"
+            placeholder="Correo Eléctronico del Deudor"
+            value={correo}
+            onChange={ e => setCorreo(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -112,6 +123,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="number"
             placeholder='Número de Teléfono'
+            value={telefono}
+            onChange={ e => setTelefono(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -122,6 +135,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="number"
             placeholder='Valor de la Deuda'
+            value={valor}
+            onChange={ e => setValor(e.target.value)}
             />
           </div>
           <div className="mb-5">
@@ -133,6 +148,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
               className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
               type="number"
               placeholder='0.0'
+              value={interes}
+              onChange={ e => setInteres(e.target.value)}
               />
               <span className='font-bold text-2xl'>%</span>
             </div>
@@ -145,6 +162,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             type="number"
             placeholder='Número de Cuotas'
+            value={cuotas}
+            onChange={ e => setCuotas(e.target.value)}
             />
           </div>
           <div className="mb-5 col-span-2">
@@ -152,9 +171,11 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
               Descripción
             </label>
             <textarea
-                id="descripcion"
-                className="border-2 w-full p-2 mt-2 outline-blue-500 text-area-size"
-                placeholder="Describe la Deuda"
+              id="descripcion"
+              className="border-2 w-full p-2 mt-2 outline-blue-500 text-area-size"
+              placeholder="Describe la Deuda"
+              value={descripcion}
+              onChange={ e => setDescripcion(e.target.value)}
             />
           </div>
             <button
@@ -162,6 +183,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal}) => {
             </button>
           <input 
             type="submit"
+            value='Registrar Deuda'
             className="col-span-2 uppercase bg-blue-500 border-2 border-blue-500 p-3 text-white font-semibold shadow-md transition duration-300 hover:bg-transparent hover:text-blue-500 hover:border-2 rounded-md cursor-pointer"
             />
             </form>
