@@ -3,7 +3,7 @@ import iconCloseModal from '../img/close.png';
 import iconOnline from '../img/online.png';
 import iconOffline from '../img/offline.png';
 
-const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar}) => {
+const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar}) => {
 
 
   const closeModal = ()=>{
@@ -48,9 +48,27 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar})
     }
   },[]);
 
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    console.log("Enviado");
+    
+    if ([nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion].includes('')) {
+      setMensaje('Todos los campos son obligatorios')
+      setTimeout(() => {
+          setMensaje('')
+      }, 3000);
+      return
+    }
+
+    guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
+  
+    closeModal()
+}
+
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
-        <div className={`bg-white w-2/3 px-5 py-5 h-modal rounded-md shadow-xl shadow-gray-800 flex flex-col`}>
+        <div className={`bg-white w-2/3 px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col`}>
             <div className='w-full h-10 flex justify-end pl-11 mb-5 mb-custom-2'>
               <img
                 className='flex justify-center rounded-full h-full bg-white br-icon-close-modal cursor-pointer'
@@ -66,7 +84,11 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar})
                 </ul>
             </nav>
             {menu === 0 && (
-                <form className='grid grid-cols-3 w-full gap-4 px-5 place-content-center' action="">
+                <form
+                  className='grid grid-cols-3 w-full gap-4 px-5 place-content-center'
+                  action=""
+                  onSubmit={handleFormSubmit}
+                >
                 <div className="mb-custom">
                 <label htmlFor="nombre" className="block text-gray-700 uppercase font-bold">
                   Id

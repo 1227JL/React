@@ -37,6 +37,8 @@ const App = () => {
   }, [deudas])
 
   const guardarDeuda = deuda =>{
+    console.log(deuda);
+
     if(deuda.id){
       const deudasActualizadas = deudas.map( deudaState => deudaState.id === deuda.id ? deuda : deudaState)
       setDeudas(deudasActualizadas)
@@ -61,6 +63,21 @@ const App = () => {
       }
   }, [deudaEditar])
 
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    console.log("Enviado");
+    
+    if ([nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion].includes('')) {
+      setMensaje('Todos los campos son obligatorios')
+      setTimeout(() => {
+          setMensaje('')
+      }, 3000);
+      return
+    }
+
+    guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
+  }
 
 
   return (
@@ -89,6 +106,8 @@ const App = () => {
           deudaEditar={deudaEditar}
           setDeudaEditar={setDeudaEditar}
           openModalDeuda={openModalDeuda}
+          guardarDeuda={guardarDeuda}
+          handleFormSubmit={handleFormSubmit}
         />}
     </>
   )
