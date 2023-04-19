@@ -118,7 +118,7 @@ tr:nth-child(even) {
     .custom-height{
         height: 80%;
     }
-  }
+}
   .clase {
     position: fixed;
     z-index: -1;
@@ -127,4 +127,28 @@ tr:nth-child(even) {
 
   .select {
     border: yellow;
+  }
+
+  .scrollable {
+    max-height: 450px;
+    overflow-y: scroll;
+  }
+
+  .table-pagos {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  .thead-pagos {
+    position: sticky;
+    top: 0;
+    background-color: #3C82F6;
+    color: white;
+    z-index: 2;
+  }
+  
+  .body-pagos {
+    overflow-y: scroll;/* ajusta la altura deseada para el tbody */
   }

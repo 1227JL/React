@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { formatearFecha } from '../helpers'
 import iconCloseModal from '../img/close.png';
 import iconOnline from '../img/online.png';
 import iconOffline from '../img/offline.png';
 
-const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar}) => {
-
+const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar}) => {
 
   const closeModal = ()=>{
-    setModalDeuda(false);
-  }
+    setAnimarModalDeuda(false)
+    setTimeout(() => {
+      setModalDeuda(false) 
+    }, 500)
+}
 
   const [mensaje, setMensaje] = useState('');
   const [nombre, setNombre] = useState('');
@@ -66,10 +69,14 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, se
     closeModal()
 }
 
+  const myArray = Array.from({ length: cuotas });
+  const tasa = valor / interes
+  const cobro = valor / cuotas + tasa
+
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
-        <div className={`bg-white w-2/3 px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col`}>
-            <div className='w-full h-10 flex justify-end pl-11 mb-5 mb-custom-2'>
+        <div className={`formModal bg-white w-2/3 px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col ${animarModalDeuda ? 'animar' : 'cerrar'}`}>
+            <div className='w-full h-10 flex justify-end pl-11 mb-1 mb-custom-2'>
               <img
                 className='flex justify-center rounded-full h-full bg-white br-icon-close-modal cursor-pointer'
                 src={iconCloseModal}
@@ -79,7 +86,7 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, se
             <nav className='w-full ml-8 mb-custom-2 mb-4'>
                 <ul className='flex justify-center gap-7 mx-auto py-2 mb-custom'>
                     <li value={0} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 0 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Editar Deuda</li>
-                    <li value={1} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 1 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Historial de Pagos</li>
+                    <li value={1} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 1 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Pagos</li>
                     <li value={2} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 2 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Registrar Nuevo Pago</li>
                 </ul>
             </nav>
@@ -220,18 +227,21 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, se
                 <label htmlFor="cuotas"className="block text-gray-700 uppercase font-bold">
                   Fecha de Creacion de la Deuda
                 </label>
-                <p className='fecha-gasto'>
-                    {fecha}
+                <p className='fecha-gasto mt-2'>
+                    {formatearFecha(fecha)}
                 </p>
               </div>
               <div className="mb-custom">
                 <label htmlFor="cuotas"className="block text-gray-700 uppercase font-bold">
                   Estado
                 </label>
-                <span className='flex items-center gap-2'>{estado ? 'Pendiente' : 'Finalizada'} <img className='h-5' src={estado ? iconOffline : iconOnline} alt="" /> </span>     
+                <span className='flex items-center gap-2 mt-2'>{estado ? 'Pendiente' : 'Finalizada'} <img className='h-5' src={estado ? iconOffline : iconOnline} alt="" /> </span>     
               </div>
               <button
-                  className='col-span-3 uppercase bg-red-500 border-2 border-red-500 p-3 text-white font-semibold shadow-md transition duration-300 hover:bg-transparent hover:text-red-500 hover:border-2 rounded-md'>Deuda Finalizada
+                className='col-span-3 uppercase bg-red-500 border-2 border-red-500 p-3 text-white font-semibold shadow-md transition duration-300 hover:bg-transparent hover:text-red-500 hover:border-2 rounded-md'
+                onClick={()=> setEstado(false)}
+                >
+                Deuda Finalizada
               </button>
               <input 
                 type="submit"
@@ -240,7 +250,32 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, se
                 />
                 </form>
             )}
-            
+            {menu === 1 && (
+              <section>
+                <div className='mt-10 bg-gray-300 mx-auto border-8 border-gray rounded-md shadow-lg scrollable'>
+                  <table className='w-full text-sm rounded-md shadow-md table-pagos'>
+                    <thead className='sticky top-0 bg-white thead-pagos'>
+                      <tr className='uppercase rounded-md border-b-0'>
+                        <th>Pago</th>
+                        <th>Valor a pagar</th>
+                        <th>Id</th>
+                        <th>Estado de pago</th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
+                      {myArray.map((item, index) => (
+                        <tr key={index}>
+                          <td className=''>{index+1}</td>
+                          <td>{cobro}</td>
+                          <td><button className='bg-'>Pago Realizado</button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+           
         </div>
     </div>
   )

@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react'
-import { formatearFecha } from '../helpers'
+
 
 const Deuda = ({deuda, setDeudaEditar, openModalDeuda}) => {
 

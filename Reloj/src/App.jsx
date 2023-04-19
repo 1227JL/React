@@ -14,6 +14,9 @@ const App = () => {
 
   // Animación del Modal
   const [animarModal, setAnimarModal] = useState(false)
+  const [animarModalDeuda, setAnimarModalDeuda] = useState(false)
+
+  const [buscador, setBuscador] = useState('')
 
   // Función que permite crear una nueva deuda
   const handleNuevaDeuda = ()=>{
@@ -25,6 +28,10 @@ const App = () => {
 
   const openModalDeuda = ()=>{
     setModalDeuda(true)
+
+    setTimeout(()=>{
+      setAnimarModalDeuda(true)
+    }, 50)
   }
 
 
@@ -90,6 +97,8 @@ const App = () => {
         setModalDeuda={setModalDeuda}
         openModalDeuda={openModalDeuda}
         setDeudaEditar={setDeudaEditar}
+        buscador={buscador}
+        setBuscador={setBuscador}
       />
       {modal && <Modal
         modal={modal}
@@ -100,7 +109,10 @@ const App = () => {
       />}
       {modalDeuda &&
         <ModalDeuda
+          modalDeuda={modalDeuda}
           setModalDeuda={setModalDeuda}
+          animarModalDeuda={animarModalDeuda}
+          setAnimarModalDeuda={setAnimarModalDeuda}
           menu={menu}
           setMenu={setMenu}
           deudaEditar={deudaEditar}
