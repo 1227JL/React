@@ -38,7 +38,6 @@ const App = () => {
 
   const guardarDeuda = deuda =>{
     if(deuda.id){
-      alert('Ya tiene Id')
       const deudasActualizadas = deudas.map( deudaState => deudaState.id === deuda.id ? deuda : deudaState)
       setDeudas(deudasActualizadas)
       setDeudaEditar({})

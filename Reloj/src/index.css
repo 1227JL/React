@@ -119,3 +119,12 @@ tr:nth-child(even) {
         height: 80%;
     }
   }
+  .clase {
+    position: fixed;
+    z-index: -1;
+  }
+
+
+  .select {
+    border: yellow;
+  }

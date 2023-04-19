@@ -13,7 +13,7 @@ const Deuda = ({deuda, setDeudaEditar, openModalDeuda}) => {
             <td>{identificacion}</td>
             <td>{telefono}</td>
             <td>{correo}</td>
-            <td>{estado}</td>
+            <td>{estado ? 'Pendiente' : 'Finalizada'}</td>
             <td className='p-2'>
               <button
                 onClick={()=>{

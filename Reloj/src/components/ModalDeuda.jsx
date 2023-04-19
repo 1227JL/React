@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import iconCloseModal from '../img/close.png';
+import iconOnline from '../img/online.png';
+import iconOffline from '../img/offline.png';
 
 const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar}) => {
 
@@ -18,7 +20,7 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar})
   const [interes, setInteres] = useState('');
   const [cuotas, setCuotas] = useState('');
   const [descripcion, setDescripcion] = useState('');
-  const [estado, setEstado] = useState('Pendiente');
+  const [estado, setEstado] = useState(true);
   const [fecha, setFecha] = useState('');
   const [id, setId] = useState('');
 
@@ -58,9 +60,9 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar})
             </div>
             <nav className='w-full ml-8 mb-custom-2 mb-4'>
                 <ul className='flex justify-center gap-7 mx-auto py-2 mb-custom'>
-                    <li value={0} className='border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300' onClick={e => setMenu(e.target.value)} >Editar Deuda</li>
-                    <li value={1} className='border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300' onClick={e => setMenu(e.target.value)} >Historial de Pagos</li>
-                    <li value={2} className='border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300' onClick={e => setMenu(e.target.value)} >Registrar Nuevo Pago</li>
+                    <li value={0} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 0 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Editar Deuda</li>
+                    <li value={1} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 1 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Historial de Pagos</li>
+                    <li value={2} className={`border-b-4 border-black pb-2 font-semibold hover:cursor-pointer hover:border-yellow-400 transition-all duration-300 ${menu === 2 ? 'border-yellow-400' : 'border-black'}`} onClick={e => setMenu(e.target.value)} >Registrar Nuevo Pago</li>
                 </ul>
             </nav>
             {menu === 0 && (
@@ -197,21 +199,14 @@ const ModalDeuda = ({setModalDeuda, menu, setMenu, deudaEditar, setDeudaEditar})
                   Fecha de Creacion de la Deuda
                 </label>
                 <p className='fecha-gasto'>
-                    Agregado el: {''}
                     {fecha}
                 </p>
               </div>
               <div className="mb-custom">
                 <label htmlFor="cuotas"className="block text-gray-700 uppercase font-bold">
-                  Número de Cuotas
+                  Estado
                 </label>
-                <input id="cuotas"
-                className="text-gray-700 outline-blue-500 border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                type="number"
-                placeholder='Número de Cuotas'
-                value={cuotas}
-                onChange={ e => setCuotas(e.target.value)}
-                />
+                <span className='flex items-center gap-2'>{estado ? 'Pendiente' : 'Finalizada'} <img className='h-5' src={estado ? iconOffline : iconOnline} alt="" /> </span>     
               </div>
               <button
                   className='col-span-3 uppercase bg-red-500 border-2 border-red-500 p-3 text-white font-semibold shadow-md transition duration-300 hover:bg-transparent hover:text-red-500 hover:border-2 rounded-md'>Deuda Finalizada

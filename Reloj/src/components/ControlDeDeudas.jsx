@@ -47,6 +47,7 @@ const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEdit
                 </select>
             </div>
         </section>
+        <h1 className='text-3xl mt-8 uppercase text-center font-bold'>{deudas.length ? 'Deudores' : 'No hay Deudores aún'}</h1>
         <section>
             <div className='mt-10 bg-gray-300 w-2/3 mx-auto rounded-md p-2 shadow-lg'>
                 <table className='w-full rounded-md shadow-md'>

@@ -14,7 +14,7 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
   const [interes, setInteres] = useState('')
   const [cuotas, setCuotas] = useState('')
   const [descripcion, setDescripcion] = useState('')
-  const [estado, setEstado] = useState('Pendiente')
+  const [estado, setEstado] = useState(true)
   const [fecha, setFecha] = useState('')
   const [id, setId] = useState('')
   
