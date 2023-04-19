@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
+import { formatearFecha } from '../helpers'
 
-const Deuda = ({deuda, openModalDeuda}) => {
+const Deuda = ({deuda, setDeudaEditar, openModalDeuda}) => {
 
   const {nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha} = deuda
-
 
   return (
     <>
@@ -16,11 +16,15 @@ const Deuda = ({deuda, openModalDeuda}) => {
             <td>{estado}</td>
             <td className='p-2'>
               <button
-                onClick={openModalDeuda}
+                onClick={()=>{
+                  setDeudaEditar(deuda)
+                  openModalDeuda()
+                }}
                 className='bg-blue-500 p-1 px-6 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300'>Ver Deuda
               </button>
-            </td>
+            </td>  
         </tr>
+        
         
     </>
   )

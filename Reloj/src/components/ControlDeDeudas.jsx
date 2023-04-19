@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Deuda from './Deuda.jsx'
 
-const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda}) => {
+const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEditar}) => {
 
   return (
     <div className='mt-10'>
@@ -67,6 +67,7 @@ const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda}) => {
                                 key={deuda.id}
                                 deuda={deuda}
                                 openModalDeuda={openModalDeuda}
+                                setDeudaEditar={setDeudaEditar}
                             />
                         ))}
                     </tbody>

@@ -10,7 +10,7 @@ const App = () => {
   // Modal
   const [modal, setModal] = useState(false)
   const [modalDeuda, setModalDeuda] = useState(false)
-  const [menu, setMenu] = useState('')
+  const [menu, setMenu] = useState(0)
 
   // Animación del Modal
   const [animarModal, setAnimarModal] = useState(false)
@@ -39,22 +39,30 @@ const App = () => {
   const guardarDeuda = deuda =>{
     if(deuda.id){
       alert('Ya tiene Id')
-      // const gastosActualizados = gastos.map( gastoState => gastoState.id === gasto.id ? gasto : gastoState)
-      // setGastos(gastosActualizados)
-      // setGastoEditar({})
+      const deudasActualizadas = deudas.map( deudaState => deudaState.id === deuda.id ? deuda : deudaState)
+      setDeudas(deudasActualizadas)
+      setDeudaEditar({})
     }else{
       deuda.id = generarId()
-      // deuda.fecha= Date.now()
+      deuda.fecha= Date.now()
       setDeudas([...deudas, deuda])
 
     }
-
 
     setAnimarModal(false)
     setTimeout(() => {
         setModal(false)
     }, 500);
   }
+
+  const [deudaEditar, setDeudaEditar] = useState({})
+  useEffect(() => {
+      if(Object.keys(deudaEditar).length > 0){
+        openModalDeuda()
+      }
+  }, [deudaEditar])
+
+
 
   return (
     <>
@@ -65,6 +73,7 @@ const App = () => {
         modalDeuda={modalDeuda}
         setModalDeuda={setModalDeuda}
         openModalDeuda={openModalDeuda}
+        setDeudaEditar={setDeudaEditar}
       />
       {modal && <Modal
         modal={modal}
@@ -73,7 +82,15 @@ const App = () => {
         setAnimarModal={setAnimarModal}
         guardarDeuda={guardarDeuda}
       />}
-      {modalDeuda && <ModalDeuda menu={menu} setMenu={setMenu}/>}
+      {modalDeuda &&
+        <ModalDeuda
+          setModalDeuda={setModalDeuda}
+          menu={menu}
+          setMenu={setMenu}
+          deudaEditar={deudaEditar}
+          setDeudaEditar={setDeudaEditar}
+          openModalDeuda={openModalDeuda}
+        />}
     </>
   )
 }
