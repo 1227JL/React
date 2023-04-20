@@ -86,15 +86,19 @@ const App = () => {
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   }
 
-  const [filtro, setFiltro] = useState('')
-  const [deudasFiltradas, setDeudasFiltradas] = useState([])
-  
-  useEffect(()=>{
- 
-    // Filtrar Gastos por categoria
-    const deudasFiltradas = deudas.filter(deuda => deuda.estado === filtro)
-    setDeudasFiltradas(deudasFiltradas);
-  }, [filtro])
+  const [filtro, setFiltro] = useState('');
+  const [deudasFiltradas, setDeudasFiltradas] = useState(deudas);
+
+  useEffect(() => {
+    if (filtro) {
+      // Si hay un filtro, filtrar las deudas por estado
+      const deudasFiltradas = deudas.filter((deuda) => deuda.estado.toString() === filtro);
+      setDeudasFiltradas(deudasFiltradas);
+    } else {
+      // Si no hay filtro, mostrar todas las deudas
+      setDeudasFiltradas(deudas);
+    }
+  }, [filtro, deudas]);
 
   return (
     <>

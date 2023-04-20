@@ -6,7 +6,17 @@ export const generarId = ()=>{
     return random + fecha
 }
 
-export const formatearFecha = (fecha, index) => {
+export const formatearFecha = (fecha) => {
+    const date = new Date(fecha)
+    const opciones = {
+        year: 'numeric',
+        month: 'long',
+        day: '2-digit'
+    }
+
+    return date.toLocaleDateString('es-ES', opciones)
+}
+export const formatearFechaPagos = (fecha, index) => {
     const date = new Date(fecha)
     date.setMonth(date.getMonth() + index) // se aumenta un mes por cada iteración
     const opciones = {
