@@ -1,10 +1,11 @@
+import React, { Component } from "react";
 import { useState, useEffect, useRef } from 'react';
 import { formatearFecha } from '../helpers'
 import iconCloseModal from '../img/close.png';
 import iconOnline from '../img/online.png';
 import iconOffline from '../img/offline.png';
 
-const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar}) => {
+const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar, handlePagoRealizado}) => {
 
   const closeModal = ()=>{
     setAnimarModalDeuda(false)
@@ -13,6 +14,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
     }, 500)
 }
 
+  const [estadoSwitch, setEstadoSwitch] = useState(false);
   const [mensaje, setMensaje] = useState('');
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -67,12 +69,20 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   
     closeModal()
-}
+  }
 
   const myArray = Array.from({ length: cuotas });
   const tasa = valor / interes
   const cobro = valor / cuotas + tasa
 
+  const formaterarCantidad = (cantidad)=>{
+    return cantidad.toLocaleString('en-US', {
+        style:'currency',
+        currency:'USD'
+    })
+  } 
+
+ 
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
         <div className={`formModal bg-white w-2/3 px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col ${animarModalDeuda ? 'animar' : 'cerrar'}`}>
@@ -258,16 +268,17 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                       <tr className='uppercase rounded-md border-b-0'>
                         <th>Pago</th>
                         <th>Valor a pagar</th>
-                        <th>Id</th>
                         <th>Estado de pago</th>
                       </tr>
                     </thead>
                     <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
                       {myArray.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index} className={` border-b-2 border-black`}>
                           <td className=''>{index+1}</td>
-                          <td>{cobro}</td>
-                          <td><button className='bg-'>Pago Realizado</button></td>
+                          <td>{formaterarCantidad(cobro)}</td>
+                          <td className={``}>
+                            <input type="checkbox" name="" id="" onChange={handlePagoRealizado} />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
