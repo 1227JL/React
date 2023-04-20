@@ -94,7 +94,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       })
     } 
     
-    const [pagos, setPagos] = useState(localStorage.getItem('id') ? parseInt(localStorage.getItem('pagos')) + 1 : 0 )
+    const [pagos, setPagos] = useState(localStorage.getItem('pagos') ? parseInt(localStorage.getItem('pagos')) + 1 : 0 )
     const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
 
     function disableCheckbox(event) {
@@ -137,7 +137,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key.startsWith('checkbox-')) {
-          savedCheckboxState[key.replace('checkbox-${id}-', '')] = JSON.parse(localStorage.getItem(key));
+          savedCheckboxState[key.replace(`checkbox-${id}-`, '')] = JSON.parse(localStorage.getItem(key));
         }
       }
       setCheckboxState(savedCheckboxState);
