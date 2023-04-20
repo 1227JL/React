@@ -6,8 +6,9 @@ export const generarId = ()=>{
     return random + fecha
 }
 
-export const formatearFecha = fecha => {
+export const formatearFecha = (fecha, index) => {
     const date = new Date(fecha)
+    date.setMonth(date.getMonth() + index) // se aumenta un mes por cada iteración
     const opciones = {
         year: 'numeric',
         month: 'long',

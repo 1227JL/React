@@ -15,7 +15,8 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       setModalDeuda(false)
       setMenu(0)
     }, 500)
-}
+  }
+  
 
   const [estadoSwitch, setEstadoSwitch] = useState(false);
   const [mensaje, setMensaje] = useState('');
@@ -71,30 +72,42 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
 
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   
+    closeModal()
   }
 
   const myArray = Array.from({ length: cuotas });
+  
   const tasa = valor / interes
   const total = Number(valor) + Number(tasa)
   const cobro = total / Number(cuotas) 
-
+  
   const formaterarCantidad = (cantidad)=>{
     return cantidad.toLocaleString('en-US', {
-        style:'currency',
+      style:'currency',
         currency:'USD'
-    })
-  } 
-
-  const [pagos, setPagos] = useState(0)
-  const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
+      })
+    } 
+    
+    const [pagos, setPagos] = useState(0)
+    const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
+    
   
+  function disableCheckbox(event) {
+    const checkbox = event.target;
+    if (checkbox.checked) {
+      checkbox.disabled = true;
+    }
+  }
   const handlePagoRealizado = (event) => {
+
+
     const index = event.target.name;
     const isChecked = event.target.checked;
 
     if (isChecked) {
       console.log('Pago número ' + (parseInt(index) + 1) + ' realizado');
       setPagos(pagos + 1);
+
     } else {
       console.log('Pago número ' + (parseInt(index) + 1) + ' sin realizar');
       setPagos(pagos - 1);
@@ -107,7 +120,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
  
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
-        <div className={`formModal bg-white w-2/3 px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col ${animarModalDeuda ? 'animar' : 'cerrar'}`}>
+        <div className={`formModal bg-white w-2/3 ${menu === 1 ? 'w-4/5' : ''} px-5 py-5 pb-10 rounded-md shadow-xl shadow-gray-800 flex flex-col ${animarModalDeuda ? 'animar' : 'cerrar'}`}>
             <div className='w-full h-10 flex justify-end pl-11 mb-1 mb-custom-2'>
               <img
                 className='flex justify-center rounded-full h-full bg-white br-icon-close-modal cursor-pointer'
@@ -240,7 +253,8 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                 type="number"
                 placeholder='Número de Cuotas'
                 value={cuotas}
-                onChange={ e => setCuotas(e.target.value)}
+                onChange={ e => setCuotas(parseInt(e.target.value))}
+                step='1'
                 />
               </div>
               <div className=" col-span-1 mb-custom-2">
@@ -283,7 +297,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                 </form>
             )}
             {menu === 1 && (
-              <section className="flex my-10 mr-10">
+              <section id="" className="flex justify-around my-10 mr-5">
                 <div className="w-1/2 flex flex-col gap-10">
                   <div className="flex items-center justify-center h-2/3">
                     <CircularProgressbar
@@ -303,14 +317,14 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                     <span className="text-center font-semibold">Pagos por Realizar: {''} {cuotas-pagos} </span>
                   </div>
                 </div>
-                <div className=' w-1/2 bg-gray-300 mx-auto border-8 border-gray h-full rounded-md shadow-lg scrollable'>
+                <div className=' w-3/4 bg-gray-300 mx-auto border-8 border-gray rounded-md shadow-lg scrollable'>
                   <table className='text-sm rounded-md shadow-md table-pagos'>
                     <thead className='sticky top-0 bg-white thead-pagos'>
                       <tr className='uppercase rounded-md border-b-0'>
                         <th>Pago</th>
                         <th>Valor a Pagar</th>
-                        <th>Estado de Pago</th>
                         <th>Fecha de Pago</th>
+                        <th>Estado de Pago</th>
                       </tr>
                     </thead>
                     <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
@@ -318,9 +332,9 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                         <tr key={index} className={` border-b-2 border-black`}>
                           <td className=''>{index+1}</td>
                           <td>{formaterarCantidad(cobro)}</td>
-                          <td>{formatearFecha(fecha)}</td>
+                          <td>{formatearFecha(fecha, index)}</td>
                           <td className={``}>
-                            <input type="checkbox" name={index} id="" onChange={handlePagoRealizado} />
+                            <input type="checkbox" name={index} id="" onClick={disableCheckbox} onChange={handlePagoRealizado} />
                           </td>
                         </tr>
                       ))}

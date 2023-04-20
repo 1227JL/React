@@ -164,7 +164,8 @@ const Modal = ({modal, setModal, animarModal, setAnimarModal, guardarDeuda}) => 
             type="number"
             placeholder='Número de Cuotas'
             value={cuotas}
-            onChange={ e => setCuotas(e.target.value)}
+            onChange={ e => setCuotas(parseInt(e.target.value))}
+            step="1"
             />
           </div>
           <div className="col-span-2">
