@@ -75,7 +75,8 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
 
   const myArray = Array.from({ length: cuotas });
   const tasa = valor / interes
-  const cobro = valor / cuotas + tasa
+  const total = Number(valor) + Number(tasa)
+  const cobro = total / Number(cuotas) 
 
   const formaterarCantidad = (cantidad)=>{
     return cantidad.toLocaleString('en-US', {
