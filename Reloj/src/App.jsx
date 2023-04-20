@@ -86,12 +86,6 @@ const App = () => {
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   }
 
-  const [pagosRealizados, setPagosRealizados] = useState([])
-
-  const handlePagoRealizado = ()=>{
-    console.log('pago realizado');
-  }
-
   return (
     <>
       <Header />
@@ -125,7 +119,6 @@ const App = () => {
           openModalDeuda={openModalDeuda}
           guardarDeuda={guardarDeuda}
           handleFormSubmit={handleFormSubmit}
-          handlePagoRealizado={handlePagoRealizado}
         />}
     </>
   )

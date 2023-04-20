@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { useState, useEffect, useRef } from 'react';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import "react-circular-progressbar/dist/styles.css"
 import { formatearFecha } from '../helpers'
 import iconCloseModal from '../img/close.png';
 import iconOnline from '../img/online.png';
 import iconOffline from '../img/offline.png';
 
-const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar, handlePagoRealizado}) => {
+const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModalDeuda, menu, setMenu, guardarDeuda, deudaEditar, setDeudaEditar}) => {
 
   const closeModal = ()=>{
     setAnimarModalDeuda(false)
     setTimeout(() => {
-      setModalDeuda(false) 
+      setModalDeuda(false)
+      setMenu(0)
     }, 500)
 }
 
@@ -68,7 +71,6 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
 
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   
-    closeModal()
   }
 
   const myArray = Array.from({ length: cuotas });
@@ -81,6 +83,25 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
         currency:'USD'
     })
   } 
+
+  const [pagos, setPagos] = useState(0)
+  const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
+  
+  const handlePagoRealizado = (event) => {
+    const index = event.target.name;
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      console.log('Pago número ' + (parseInt(index) + 1) + ' realizado');
+      setPagos(pagos + 1);
+    } else {
+      console.log('Pago número ' + (parseInt(index) + 1) + ' sin realizar');
+      setPagos(pagos - 1);
+      
+    }
+
+
+  }
 
  
   return (
@@ -261,14 +282,34 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                 </form>
             )}
             {menu === 1 && (
-              <section>
-                <div className='mt-10 bg-gray-300 mx-auto border-8 border-gray rounded-md shadow-lg scrollable'>
-                  <table className='w-full text-sm rounded-md shadow-md table-pagos'>
+              <section className="flex my-10 mr-10">
+                <div className="w-1/2 flex flex-col gap-10">
+                  <div className="flex items-center justify-center h-2/3">
+                    <CircularProgressbar
+                      className="w-1/2 text-md"
+                      styles={buildStyles({
+                        pathColor: '#3B82F6',
+                        trailColor:'#F5F5F5',
+                        textColor: '#3B82F6',
+                        textSize: '12px'
+                      })}
+                      value={porcentajeAvance}
+                      text={`${porcentajeAvance}%`}
+                    />
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <span className="text-center font-semibold">Pagos Realizados: {''} {pagos}</span>
+                    <span className="text-center font-semibold">Pagos por Realizar: {''} {cuotas-pagos} </span>
+                  </div>
+                </div>
+                <div className=' w-1/2 bg-gray-300 mx-auto border-8 border-gray h-full rounded-md shadow-lg scrollable'>
+                  <table className='text-sm rounded-md shadow-md table-pagos'>
                     <thead className='sticky top-0 bg-white thead-pagos'>
                       <tr className='uppercase rounded-md border-b-0'>
                         <th>Pago</th>
-                        <th>Valor a pagar</th>
-                        <th>Estado de pago</th>
+                        <th>Valor a Pagar</th>
+                        <th>Estado de Pago</th>
+                        <th>Fecha de Pago</th>
                       </tr>
                     </thead>
                     <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
@@ -276,8 +317,9 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                         <tr key={index} className={` border-b-2 border-black`}>
                           <td className=''>{index+1}</td>
                           <td>{formaterarCantidad(cobro)}</td>
+                          <td>{formatearFecha(fecha)}</td>
                           <td className={``}>
-                            <input type="checkbox" name="" id="" onChange={handlePagoRealizado} />
+                            <input type="checkbox" name={index} id="" onChange={handlePagoRealizado} />
                           </td>
                         </tr>
                       ))}
