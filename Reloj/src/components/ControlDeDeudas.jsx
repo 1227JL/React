@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
 import Deuda from './Deuda.jsx'
+import Filtros from './Filtros.jsx'
 
-const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEditar, buscador, setBuscador}) => {
+const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEditar, buscador, setBuscador,filtro, setFiltro, deudasFiltradas}) => {
+
+
 
   return (
     <div className='mt-10'>
@@ -41,12 +44,13 @@ const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEdit
             <div className="mt-16 flex w-1/2 mx-auto justify-between">
                 <button 
                     onClick={handleNuevaDeuda} 
-                    className='bg-blue-500 p-3 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300 outline-none'>+ Nuevo Deudor</button>
-                <select name="" id="" className='text-center outline-none px-2 rounded-md shadow-lg hover:shadow-xl transition duration-300'>
-                    <option className='p-5' value="">Todos</option>
-                    <option className='p-2 block' value="">Deudas Pendientes</option>
-                    <option className='p-2 block' value="">Condonaciónes de Deudas</option>
-                </select>
+                    className='bg-blue-500 p-3 text-white rounded-md shadow-lg hover:shadow-xl transition duration-300 outline-none'>
+                    + Nuevo Deudor
+                </button>
+                <Filtros
+                    filtro={filtro}
+                    setFiltro={setFiltro}
+                />
             </div>
         </section>
         <h1 className='text-3xl mt-8 uppercase text-center font-bold'>{deudas.length ? 'Deudores' : 'No hay Deudores aún'}</h1>
@@ -65,14 +69,32 @@ const ControlDeDeudas = ({handleNuevaDeuda, deudas, openModalDeuda, setDeudaEdit
                         </tr>
                     </thead>
                     <tbody className='bg-white rounded-md p-10 text-center'>
-                        {deudas.map(deuda =>(
-                            <Deuda
-                                key={deuda.id}
-                                deuda={deuda}
-                                openModalDeuda={openModalDeuda}
-                                setDeudaEditar={setDeudaEditar}
-                            />
-                        ))}
+                        {filtro ? (
+                            <>
+                                {deudasFiltradas.map(deuda =>(
+                                <Deuda
+                                    key={deuda.id}
+                                    deuda={deuda}
+                                    openModalDeuda={openModalDeuda}
+                                    setDeudaEditar={setDeudaEditar}
+                                />
+                                ))}
+                            </>
+
+                        ) : (
+                            <>
+                                {deudas.map(deuda =>(
+                                    <Deuda
+                                        key={deuda.id}
+                                        deuda={deuda}
+                                        openModalDeuda={openModalDeuda}
+                                        setDeudaEditar={setDeudaEditar}
+                                    />
+                                ))}
+                            </>
+                        )
+                        
+                        }
                     </tbody>
                 </table>
             </div>

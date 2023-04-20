@@ -86,6 +86,16 @@ const App = () => {
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
   }
 
+  const [filtro, setFiltro] = useState('')
+  const [deudasFiltradas, setDeudasFiltradas] = useState([])
+  
+  useEffect(()=>{
+ 
+    // Filtrar Gastos por categoria
+    const deudasFiltradas = deudas.filter(deuda => deuda.estado === filtro)
+    setDeudasFiltradas(deudasFiltradas);
+  }, [filtro])
+
   return (
     <>
       <Header />
@@ -98,6 +108,9 @@ const App = () => {
         setDeudaEditar={setDeudaEditar}
         buscador={buscador}
         setBuscador={setBuscador}
+        filtro={filtro}
+        setFiltro={setFiltro}
+        deudasFiltradas={deudasFiltradas}
       />
       {modal && <Modal
         modal={modal}
