@@ -100,9 +100,11 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       const savedPagos = localStorage.getItem('pagos');
       return savedPagos !== null ? parseInt(savedPagos) + 1 : 0;
     });
-
+    
+    const [checkedCount, setCheckedCount] = useState(0);
+    
     const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
-
+    
     function disableCheckbox(event) {
       const checkbox = event.target;
       if (checkbox.checked) {
@@ -110,8 +112,8 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       }
     }
     
-    const [checkboxState, setCheckboxState] = useState({}); // estado para el estado del checkbox
-      
+    const [checkboxState, setCheckboxState] = useState({});
+    
     const handlePagoRealizado = (event) => {
       const checkboxIndex = event.target.name;
       const isChecked = event.target.checked;
@@ -120,46 +122,46 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
         newState[checkboxIndex] = isChecked;
         return newState;
       });
-      localStorage.setItem(`checkbox-${checkboxIndex}`, isChecked);
-
-   
+      localStorage.setItem(`checkbox-${id}-${checkboxIndex}`, isChecked);
+    
       if (isChecked) {
         console.log('Pago número ' + (parseInt(checkboxIndex) + 1) + ' realizado');
-        setPagos(pagos + 1);
+        setCheckedCount(prevCount => prevCount + 1);
       } else {
         console.log('Pago número ' + (parseInt(checkboxIndex) + 1) + ' sin realizar');
-        setPagos(pagos - 1);
+        setCheckedCount(prevCount => prevCount - 1);
       }
-      
-      localStorage.setItem('pagos', pagos.toString());
-
-    }
+    };
     
     useEffect(() => {
       localStorage.setItem(id, porcentajeAvance);
       console.log(porcentajeAvance);
-      
-      if(pagos == cuotas){
+    
+      if(pagos === cuotas){
         console.log('Deuda Finalizada');
-        setEstado(false)
-        
+        setEstado(false);
       }else{
-        setEstado(true)
+        setEstado(true);
       }
-
+    
     }, [porcentajeAvance]);
-
+    
     useEffect(() => {
       // Obtener los valores guardados en localStorage
       const savedCheckboxState = {};
+      let count = 0;
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
-        if (key.startsWith('checkbox-')) {
-          savedCheckboxState[key.replace('checkbox-', '')] = JSON.parse(localStorage.getItem(key));
+        if (key.startsWith(`checkbox-${id}-`)) {
+          savedCheckboxState[key.replace(`checkbox-${id}-`, '')] = JSON.parse(localStorage.getItem(key));
+          if (savedCheckboxState[key.replace(`checkbox-${id}-`, '')]) {
+            count++;
+          }
         }
       }
       setCheckboxState(savedCheckboxState);
-    }, []);
+      setCheckedCount(count);
+    }, [id]);
     
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
@@ -372,7 +374,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                     </thead>
                     <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
                     {myArray.map((item, index) => {
-                      // const isChecked = localStorage.getItem(`checkbox-${index}`) === 'true';
+                      const isChecked = index < checkedCount;
                       return (
                         <tr key={index} className={` border-b-2 border-black`}>
                           <td className=''>{index+1}</td>
@@ -382,10 +384,10 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                           <input
                             type="checkbox"
                             name={index}
-                            checked={checkboxState[index] || false}
+                            checked={isChecked}
                             onChange={handlePagoRealizado}
                             onClick={disableCheckbox}
-                            disabled={checkboxState[index]}
+                            disabled={isChecked}
                           />
                           </td>
                         </tr>
