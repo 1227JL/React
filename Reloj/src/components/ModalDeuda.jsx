@@ -114,20 +114,18 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
         newState[checkboxIndex] = isChecked;
         return newState;
       });
+      localStorage.setItem(`checkbox-${checkboxIndex}`, isChecked);
 
    
       if (isChecked) {
         console.log('Pago número ' + (parseInt(checkboxIndex) + 1) + ' realizado');
         setPagos(pagos + 1);
-
       } else {
         console.log('Pago número ' + (parseInt(checkboxIndex) + 1) + ' sin realizar');
         setPagos(pagos - 1);
       }
-
-      localStorage.setItem(id, pagos.toString());
-
-      localStorage.setItem(`checkbox-${id}-${checkboxIndex}`, isChecked);
+      
+      localStorage.setItem('pagos', pagos.toString());
 
     }
     
@@ -137,11 +135,11 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
         if (key.startsWith('checkbox-')) {
-          savedCheckboxState[key.replace(`checkbox-${id}-`, '')] = JSON.parse(localStorage.getItem(key));
+          savedCheckboxState[key.replace('checkbox-', '')] = JSON.parse(localStorage.getItem(key));
         }
       }
       setCheckboxState(savedCheckboxState);
-    }, [pagos]);
+    }, []);
 
     useEffect(() => {
       localStorage.setItem(id, porcentajeAvance);
@@ -367,7 +365,7 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                     </thead>
                     <tbody className='bg-white rounded-md text-center overflow-y-scroll body-pagos'>
                     {myArray.map((item, index) => {
-                      const isChecked = localStorage.getItem(`checkbox-${index}`) === 'true';
+                      // const isChecked = localStorage.getItem(`checkbox-${index}`) === 'true';
                       return (
                         <tr key={index} className={` border-b-2 border-black`}>
                           <td className=''>{index+1}</td>
@@ -382,7 +380,6 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
                             onClick={disableCheckbox}
                             disabled={checkboxState[index]}
                           />
-
                           </td>
                         </tr>
                       );
