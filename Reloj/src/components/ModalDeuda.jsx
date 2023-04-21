@@ -78,7 +78,9 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
     }
 
     guardarDeuda({nombre, apellido, identificacion, correo, telefono, valor, interes, cuotas, descripcion, estado, id, fecha})
+      
     closeModal()
+
   }
 
   const myArray = Array.from({ length: cuotas });
@@ -94,7 +96,11 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       })
     } 
     
-    const [pagos, setPagos] = useState(localStorage.getItem('pagos') ? parseInt(localStorage.getItem('pagos')) + 1 : 0 )
+    const [pagos, setPagos] = useState(() => {
+      const savedPagos = localStorage.getItem('pagos');
+      return savedPagos !== null ? parseInt(savedPagos) + 1 : 0;
+    });
+
     const porcentajeAvance = ((pagos / cuotas) * 100).toFixed(2);
 
     function disableCheckbox(event) {
@@ -130,18 +136,6 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
     }
     
     useEffect(() => {
-      // Obtener los valores guardados en localStorage
-      const savedCheckboxState = {};
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key.startsWith('checkbox-')) {
-          savedCheckboxState[key.replace('checkbox-', '')] = JSON.parse(localStorage.getItem(key));
-        }
-      }
-      setCheckboxState(savedCheckboxState);
-    }, []);
-
-    useEffect(() => {
       localStorage.setItem(id, porcentajeAvance);
       console.log(porcentajeAvance);
       
@@ -152,7 +146,20 @@ const ModalDeuda = ({modalDeuda, setModalDeuda, animarModalDeuda, setAnimarModal
       }else{
         setEstado(true)
       }
+
     }, [porcentajeAvance]);
+
+    useEffect(() => {
+      // Obtener los valores guardados en localStorage
+      const savedCheckboxState = {};
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('checkbox-')) {
+          savedCheckboxState[key.replace('checkbox-', '')] = JSON.parse(localStorage.getItem(key));
+        }
+      }
+      setCheckboxState(savedCheckboxState);
+    }, []);
     
   return (
     <div className={`h-full flex flex-col justify-center fixed top-0 z-10 modal-bg w-screen items-center`}>
