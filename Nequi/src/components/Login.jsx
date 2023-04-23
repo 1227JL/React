@@ -5,55 +5,62 @@ const Login = () => {
     const [numberCel, setNumberCel] = useState('')
     const [mensaje, setMensaje] = useState('Escribe por favor el número de tu celular para seguir')
 
-    const handleOnchange = (e)=>{
-        e.preventDefault()
+    const handleClick = () =>{
+        console.log('click');
+    }
 
-        // Validación del formulario
-        if(numberCel === ''){
-          setMensaje('Escribe por favor el número de tu celular para seguir')
+    const limit = 10;
+    const handleOnchange = () => {
+        console.log(numberCel.length);
+        if (numberCel.trim().length + 1 === 0) {
+          setMensaje("Escribe por favor el número de tu celular para seguir");
+        } else if (numberCel !== '3137962847') {
+          setMensaje("¡Ups! Debes escribir un numero de cel válido.");
         } else {
-          setMensaje('')
+          setMensaje("");
         }
-    }
+    };
 
-    const handleOnFocus = () => {
-        setMensaje('')
-    }
-
-    const handleOnBlur = () => {
-        if(numberCel === ''){
-          setMensaje('Escribe por favor el número de tu celular para seguir')
-        }
-    }
 
     return (
-        <div className='h-full w-full login'>
-            <section className='h-5/6'>
+        <form className='h-screen w-full login'>
+            <section className='h-3/4'>
                 <div className='h-full flex flex-col justify-center items-center'>
                     <img src="" alt="" />
-                    <h1 className='text-white text-4xl' >NEQUI</h1>
+                    <h1 className='text-white text-5xl font-thin-bold' >NEQUI</h1>
                 </div>
             </section>
-            <section className='h-2/6'>
+            <section className=''>
                 <div className='px-4'>
                     <div className='flex gap-3 bg-login-input border-red-400 rounded-xl p-3 pt-2 pb-3'>
-                        <label htmlFor="number-phone" className='self-center text-sm text-red-400'>+57</label>
+                        <label htmlFor="number-phone" className='self-center text-sm color-red'>+57</label>
                         <div className='hr-login'></div>
                         <input
                             id='number-phone'
                             className='w-full bg-transparent text-white placeholder-white outline-none'
-                            type="text"
+                            type="number"
                             placeholder='Número de celular'
                             value={numberCel}
-                            onChange={e => setNumberCel(e.target.value)}
-                            onFocus={handleOnFocus}
-                            onBlur={handleOnBlur}
+                            maxLength={10}
+                            onChange={(e) => {
+                                setNumberCel(e.target.value.slice(0, limit))
+                                handleOnchange()
+                            }}
                         />
                     </div>
-                    <span className="text-red-400 text-xs">{mensaje}</span>
+                    <span className="text-red-400 opacity-70 text-xs">{mensaje}</span>
                 </div>
             </section>
-        </div>
+            <div className="p-4 pb-0">
+            <input
+                onClick={handleClick}
+                disabled={numberCel.trim().length < 10}
+                className={`w-full bg-red text-white h-12 rounded-3xl ${numberCel.trim().length < 10 ? "disabled-btn" : ""}`}
+                value="Entra"
+                type="button"
+            />
+            </div>
+        </form>
     )
 }
 
