@@ -30,6 +30,9 @@ const Heading = styled.h1`
   text-align: center;
   font-weight: 700;
   font-size: 34px;
+  @media (max-width: 400px){
+    font-size: 2rem;
+  }
 
   &::after {
     content: '';
