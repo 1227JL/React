@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import Home from './components/Home'
 import styled from '@emotion/styled'
 import Formulario from './components/Formulario'
-import AnimationWeather from './components/AnimationWeather'
 import Background from './img/Background.png'
 import * as THREE from 'three';
 
@@ -16,12 +15,12 @@ const AppContainer = styled.div`
 `
 function App() {
 
+  const [lugar, setLugar] = useState({})
+
   return (
     <AppContainer>
-      <AnimationWeather/>
-      <Formulario />
-
-      {/* <Home country={country} city={city}/> */}
+      {Object.keys(lugar).length > 0 ? <Home lugar={lugar}/> : <Formulario lugar={lugar} setLugar={setLugar}/>}
+      
     </AppContainer>
   )
 }

@@ -1,14 +1,12 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import Night from '../img/night.jpg'
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background-image: url(${Night});
-    background-size: cover;
+    background-color: #2f2f2f;
     color: white;
 `
 

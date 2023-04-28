@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from '@emotion/styled';
+import AnimationWeather from './AnimationWeather'
 
 const Form = styled.form`
   display: flex;
@@ -47,7 +48,7 @@ const Enviar = styled.input`
   }
 `
 
-function Formulario() {
+function Formulario({lugar, setLugar}) {
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -55,7 +56,7 @@ function Formulario() {
   const [countrySelect, setCountrySelect] = useState('')
   const [stateSelect, setStateSelect] = useState('');
   const [citySelect, setCitySelect] = useState('');
-
+  
   useEffect(() => {
     axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
       headers: {
@@ -129,8 +130,16 @@ function Formulario() {
     setCitySelect(city)
   }
 
+  const handleSubmit = (e)=>{
+    e.preventDefault()
+    console.log("Enviando...");
+    setLugar({ country: countrySelect, state: stateSelect, city: citySelect });
+  }
+
   return (
-    <Form>
+    <>
+    <AnimationWeather/>
+    <Form onSubmit={handleSubmit}>
       <Contenedor>
         <label htmlFor="country">País</label>
         <select id="country" value={countrySelect} onChange={handleCountryChange}>
@@ -163,6 +172,7 @@ function Formulario() {
       </Contenedor>
       <Enviar type="submit" value='Enviar Ciudad' />
     </Form>
+    </>
   );
 }
 
