@@ -1,0 +1,19 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Litio', sans-serif;
+}
+
+:root{
+    --primary-100:#4CAF50;
+    --primary-200:#2a9235;
+    --primary-300:#005100;
+    --accent-100:#8BC34A;
+    --accent-200:#286400;
+    --text-100:#333333;
+    --text-200:#5c5c5c;
+    --bg-100:#F2F2F2;
+    --bg-200:#e8e8e8;
+    --bg-300:#bfbfbf;
+}
