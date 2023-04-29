@@ -10,7 +10,7 @@ const Container = styled.div`
 `
 const SectionLogo = styled.section`
   display: flex;
-  height: 500px;
+  height: 470px;
 `
 
 const Section = styled.section`
