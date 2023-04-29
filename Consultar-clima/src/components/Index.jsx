@@ -10,7 +10,7 @@ const Container = styled.div`
 `
 const SectionLogo = styled.section`
   display: flex;
-  height: 470px;
+  height: 400px;
 `
 
 const Section = styled.section`
@@ -55,6 +55,11 @@ const Start = styled.button`
   box-shadow: #fff;
   border: none;
   box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
+  &:hover{
+    background-color: #e8cb55;
+    cursor: pointer;
+  }
 `
 
 const Index = () => {
