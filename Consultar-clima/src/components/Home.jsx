@@ -8,6 +8,7 @@ const Home = ({lugar}) => {
     const fecha = new Date()
     const opciones = { weekday: 'long' };
     const diaSemana = fecha.toLocaleDateString('es-ES', opciones);
+    console.log('Home');
 
   return (
     <div className="container">

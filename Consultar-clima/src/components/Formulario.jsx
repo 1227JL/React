@@ -1,15 +1,29 @@
 import { useState, useEffect } from 'react';
-import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
 import styled from '@emotion/styled';
-import AnimationWeather from './AnimationWeather'
 import Error from './Error';
 
 const Contenedor = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-  gap: 5rem;
+  height: 100vh;
+
+  .sub-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: auto;
+    height: 400px;
+  }
+`
+const Title = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  text-align: center;
+  color: white;
+  
 `
 
 const Form = styled.form`
@@ -21,7 +35,7 @@ const Form = styled.form`
   font-size: 1rem;
   width: 300px;
   padding: 20px;
-  margin: 10rem auto;
+  margin: 0 auto;
   gap: 10px;
 
   @media (max-width: 395px) {
@@ -59,17 +73,16 @@ const ContenedorSelect = styled.div`
   }
 `
 const Enviar = styled.input`
-  background-color: #5186db;
-  color: white;
+  background-color: #FFE061;
   padding: 10px;
   border-radius: 5px;
   border: none;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   margin-top: 15px;
 
   &:hover {
-    background-color: #4776c2;
+    background-color: #e8cb55;
     cursor: pointer;
   }
 `
@@ -170,42 +183,44 @@ function Formulario({lugar, setLugar}) {
   }
 
   return (
-    <Contenedor>
-    <AnimationWeather/>
-    <Form onSubmit={handleSubmit}>
-      {error && <Error>Todos los campos son obligatorios</Error>}
-      <ContenedorSelect>
-        <label htmlFor="country" className='pais'>País</label>
-        <select id="country" value={countrySelect} onChange={handleCountryChange}>
-          <option value="">Seleccionar</option>
-          {countries.map(country => (
-            <option key={country.country_name} value={country.country_name}>{country.country_name}</option>
-          ))}
-        </select>
-      </ContenedorSelect>
+    <Contenedor className='bg'>
+      <div className='sub-container'>
+        <Title><h1>Elige una Ubicación</h1></Title>
+        <Form onSubmit={handleSubmit}>
+          {error && <Error>Todos los campos son obligatorios</Error>}
+          <ContenedorSelect>
+            <label htmlFor="country" className='pais'>País</label>
+            <select id="country" value={countrySelect} onChange={handleCountryChange}>
+              <option value="">Seleccionar</option>
+              {countries.map(country => (
+                <option key={country.country_name} value={country.country_name}>{country.country_name}</option>
+              ))}
+            </select>
+          </ContenedorSelect>
 
-      <ContenedorSelect>
-        <label htmlFor="state">Estado</label>
-        <select id="state" onChange={handleStateChange}>
-          <option value="">Seleccionar</option>
-          {states.map(state => (
-            <option key={state.state_name} value={state.state_name}>{state.state_name}</option>
-          ))}
-        </select>
-      </ContenedorSelect>
-      
-      <ContenedorSelect>
-        <label htmlFor="city">Ciudad</label>
-        <select id="city" value={citySelect} onChange={handleCityChange} >
-          <option value="">Seleccionar</option>
-          {cities.map(city => (
-            <option key={city.city_name} value={city.city_name}>{city.city_name}</option>
-            ))}
-          {cities.length == 0 && <option>{stateSelect}</option>}
-        </select>
-      </ContenedorSelect>
-      <Enviar type="submit" value='Enviar Ubicación' />
-    </Form>
+          <ContenedorSelect>
+            <label htmlFor="state">Estado</label>
+            <select id="state" onChange={handleStateChange}>
+              <option value="">Seleccionar</option>
+              {states.map(state => (
+                <option key={state.state_name} value={state.state_name}>{state.state_name}</option>
+              ))}
+            </select>
+          </ContenedorSelect>
+          
+          <ContenedorSelect>
+            <label htmlFor="city">Ciudad</label>
+            <select id="city" value={citySelect} onChange={handleCityChange} >
+              <option value="">Seleccionar</option>
+              {cities.map(city => (
+                <option key={city.city_name} value={city.city_name}>{city.city_name}</option>
+                ))}
+              {cities.length == 0 && <option>{stateSelect}</option>}
+            </select>
+          </ContenedorSelect>
+          <Enviar type="submit" value='Enviar Ubicación' />
+        </Form>
+      </div>
     </Contenedor>
   );
 }

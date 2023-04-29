@@ -13,14 +13,14 @@ const AppContainer = styled.div`
   color: black;
 `
 function App() {
-
+  const [pronosticar, setPronosticar] = useState(false)
   const [lugar, setLugar] = useState({})
 
   return (
     <AppContainer>
-      <Index/>
-      {/* {Object.keys(lugar).length > 0 ? <Home lugar={lugar}/> : <Formulario lugar={lugar} setLugar={setLugar}/>} */}
-      
+      {pronosticar || <Index setPronosticar={setPronosticar} />}
+      {pronosticar && Object.keys(lugar).length === 0 && <Formulario lugar={lugar} setLugar={setLugar} />}
+      {Object.keys(lugar).length > 0 && <Home lugar={lugar} />}
     </AppContainer>
   )
 }
