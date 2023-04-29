@@ -1,65 +1,84 @@
 import styled from '@emotion/styled'
-import React from 'react'
+import style from '../Styles/Home.css'
+import { formatearFecha } from '../helpers'
 
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-color: #2f2f2f;
-    color: white;
-`
 
-const Location = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 3rem;
-`
+const Home = ({lugar}) => {
+    const {country, state, city} = lugar
+    const fecha = new Date()
+    const opciones = { weekday: 'long' };
+    const diaSemana = fecha.toLocaleDateString('es-ES', opciones);
 
-const City = styled.h1`
-    font-size: 2.4rem;
-    margin-bottom: 0.1rem;
-`
-
-const Country = styled.h1`
-    font-size: 1rem;
-    margin-bottom: 4.2rem;
-`
-
-const Weather = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin-bottom: 17rem;
-`
-
-const Degrees = styled.span`
-    font-size: 5.3rem;
-    font-weight: 700;
-    margin-left: 24px;
-`
-
-const Dates = styled.div`
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-`
-
-const Home = ({country, city}) => {
   return (
-    <Container>
-        <Location>            
-            <City>{city}</City>
-            <Country>{country}</Country>
-        </Location>
-        <Weather>
-            <Degrees>27°<span className='centigrados'>C</span></Degrees>
-        </Weather>
-        <Dates>
-
-        </Dates>
-    </Container>
+    <div className="container">
+        <div className="weather-side">
+            <div className="weather-gradient">
+            <div className="date-container">
+                <h2 className="date-dayname">{diaSemana}</h2>
+                <span className="date-day">{formatearFecha(fecha)}</span>
+                <i className="location-icon" data-feather="map-pin"></i>
+                <span className="location">{city}, {country}</span>
+            </div>
+            <div className="weather-container">
+                <i className="weather-icon" data-feather="sun"></i>
+                <h1 className="weather-temp">29°C</h1>
+                <h3 className="weather-desc">Sunny</h3>
+            </div>
+            </div>
+        </div>
+        <div className="info-side">
+            <div className="today-info-container">
+            <div className="today-info">
+                <div className="precipitation">
+                <span className="title">PRECIPITATION</span>
+                <span className="value">0 %</span>
+                <div className="clear"></div>
+                </div>
+                <div className="humidity">
+                <span className="title">HUMIDITY</span>
+                <span className="value">34 %</span>
+                <div className="clear"></div>
+                </div>
+                <div className="wind">
+                <span className="title">WIND</span>
+                <span className="value">0 km/h</span>
+                <div className="clear"></div>
+                </div>
+            </div>
+            </div>
+            <div className="week-container">
+            <ul className="week-list">
+                <li className="active">
+                <i className="day-icon" data-feather="sun"></i>
+                <span className="day-name">Tue</span>
+                <span className="day-temp">29°C</span>
+                </li>
+                <li>
+                <i className="day-icon" data-feather="cloud"></i>
+                <span className="day-name">Wed</span>
+                <span className="day-temp">21°C</span>
+                </li>
+                <li>
+                <i className="day-icon" data-feather="cloud-snow"></i>
+                <span className="day-name">Thu</span>
+                <span className="day-temp">08°C</span>
+                </li>
+                <li>
+                <i className="day-icon" data-feather="cloud-rain"></i>
+                <span className="day-name">Fry</span>
+                <span className="day-temp">19°C</span>
+                </li>
+                <div className="clear"></div>
+            </ul>
+            </div>
+            <div className="location-container">
+            <button className="location-button">
+                <i data-feather="map-pin"></i>
+                <span>Change location</span>
+            </button>
+            </div>
+        </div>
+    </div>
   )
 }
 

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
+import Index from './components/Index'
+import Formulario from './components/Formulario'
 import Home from './components/Home'
 import styled from '@emotion/styled'
-import Formulario from './components/Formulario'
-import Background from './img/Background.png'
-import * as THREE from 'three';
 
 const AppContainer = styled.div`
   display: flex;  
   flex-direction: column;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   font-family: 'Lato', sans-serif;
   color: black;
 `
@@ -19,7 +18,8 @@ function App() {
 
   return (
     <AppContainer>
-      {Object.keys(lugar).length > 0 ? <Home lugar={lugar}/> : <Formulario lugar={lugar} setLugar={setLugar}/>}
+      <Index/>
+      {/* {Object.keys(lugar).length > 0 ? <Home lugar={lugar}/> : <Formulario lugar={lugar} setLugar={setLugar}/>} */}
       
     </AppContainer>
   )

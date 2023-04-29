@@ -5,8 +5,10 @@
     height: 150px;
     position: absolute;
     z-index: 100;
-    top: calc(23% - 75px);
+    top: calc(20% - 75px);
     left: calc(50% - 75px);
+
+    
   }
   
   .sun{

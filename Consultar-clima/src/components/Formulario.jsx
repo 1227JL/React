@@ -1,7 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useSpring, animated } from 'react-spring';
 import axios from 'axios';
 import styled from '@emotion/styled';
 import AnimationWeather from './AnimationWeather'
+import Error from './Error';
+
+const Contenedor = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 5rem;
+`
 
 const Form = styled.form`
   display: flex;
@@ -12,11 +21,27 @@ const Form = styled.form`
   font-size: 1rem;
   width: 300px;
   padding: 20px;
-  margin: auto;
+  margin: 10rem auto;
   gap: 10px;
+
+  @media (max-width: 395px) {
+    box-shadow:none;
+    font-size: 1.3rem;
+    gap: 30px;
+    height: 100%;
+    margin-top: 7.2rem;
+
+    select{
+      font-size: 1.2rem;
+    }
+    input[type='submit']{
+      font-size: 1.1rem;
+      padding: 15px;
+    }
+  }
 `
 
-const Contenedor = styled.div`
+const ContenedorSelect = styled.div`
   display: flex;
   flex-direction: column;
   gap: 7px;
@@ -41,6 +66,7 @@ const Enviar = styled.input`
   border: none;
   font-weight: 700;
   text-transform: uppercase;
+  margin-top: 15px;
 
   &:hover {
     background-color: #4776c2;
@@ -56,7 +82,8 @@ function Formulario({lugar, setLugar}) {
   const [countrySelect, setCountrySelect] = useState('')
   const [stateSelect, setStateSelect] = useState('');
   const [citySelect, setCitySelect] = useState('');
-  
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     axios.get('https://www.universal-tutorial.com/api/getaccesstoken', {
       headers: {
@@ -132,25 +159,32 @@ function Formulario({lugar, setLugar}) {
 
   const handleSubmit = (e)=>{
     e.preventDefault()
-    console.log("Enviando...");
+    if([citySelect].includes('')){
+      setError(true)
+      setTimeout(() => {
+        setError(false)
+      }, 3000);
+      return
+    }
     setLugar({ country: countrySelect, state: stateSelect, city: citySelect });
   }
 
   return (
-    <>
+    <Contenedor>
     <AnimationWeather/>
     <Form onSubmit={handleSubmit}>
-      <Contenedor>
-        <label htmlFor="country">País</label>
+      {error && <Error>Todos los campos son obligatorios</Error>}
+      <ContenedorSelect>
+        <label htmlFor="country" className='pais'>País</label>
         <select id="country" value={countrySelect} onChange={handleCountryChange}>
           <option value="">Seleccionar</option>
           {countries.map(country => (
             <option key={country.country_name} value={country.country_name}>{country.country_name}</option>
           ))}
         </select>
-      </Contenedor>
+      </ContenedorSelect>
 
-      <Contenedor>
+      <ContenedorSelect>
         <label htmlFor="state">Estado</label>
         <select id="state" onChange={handleStateChange}>
           <option value="">Seleccionar</option>
@@ -158,9 +192,9 @@ function Formulario({lugar, setLugar}) {
             <option key={state.state_name} value={state.state_name}>{state.state_name}</option>
           ))}
         </select>
-      </Contenedor>
+      </ContenedorSelect>
       
-      <Contenedor>
+      <ContenedorSelect>
         <label htmlFor="city">Ciudad</label>
         <select id="city" value={citySelect} onChange={handleCityChange} >
           <option value="">Seleccionar</option>
@@ -169,10 +203,10 @@ function Formulario({lugar, setLugar}) {
             ))}
           {cities.length == 0 && <option>{stateSelect}</option>}
         </select>
-      </Contenedor>
-      <Enviar type="submit" value='Enviar Ciudad' />
+      </ContenedorSelect>
+      <Enviar type="submit" value='Enviar Ubicación' />
     </Form>
-    </>
+    </Contenedor>
   );
 }
 
