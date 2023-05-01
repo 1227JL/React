@@ -13,7 +13,11 @@ const Contenedor = styled.div`
     flex-direction: column;
     gap: 30px;
     margin: auto;
-    height: 400px;
+    height: 420px;
+
+    @media (max-width: 415px) {
+      margin: 10rem 10px;
+    }
   }
 `
 const Title = styled.div`
@@ -38,12 +42,12 @@ const Form = styled.form`
   margin: 0 auto;
   gap: 10px;
 
-  @media (max-width: 395px) {
+  @media (max-width: 415px) {
     box-shadow:none;
     font-size: 1.3rem;
     gap: 30px;
     height: 100%;
-    margin-top: 7.2rem;
+    margin: auto;
 
     select{
       font-size: 1.2rem;
@@ -116,6 +120,7 @@ function Formulario({lugar, setLugar}) {
       })
       .then(response => {
         setCountries(response.data);
+  
       })
       .catch(error => {
         console.log('Error al obtener países: ', error);
@@ -139,6 +144,8 @@ function Formulario({lugar, setLugar}) {
     })
     .then(response => {
       setStates(response.data);
+
+
     })
     .catch(error => {
       console.log('Error al obtener estados: ', error);
@@ -159,6 +166,8 @@ function Formulario({lugar, setLugar}) {
     })
     .then(response => {
       setCities(response.data);
+
+
     })
     .catch(error => {
       console.log('Error al obtener ciudades: ', error);
