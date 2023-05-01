@@ -189,6 +189,7 @@ function Formulario({lugar, setLugar}) {
       return
     }
     setLugar({ country: countrySelect, state: stateSelect, city: citySelect });
+
   }
 
   return (

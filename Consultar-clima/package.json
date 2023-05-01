@@ -15,7 +15,9 @@
     "axios": "^1.3.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-slick": "^0.29.0",
     "react-spring": "^9.7.1",
+    "slick-carousel": "^1.8.1",
     "three": "^0.152.1",
     "unpkg": "^0.2.0",
     "xml-js": "^1.6.11"

@@ -13,6 +13,10 @@ const Container = styled.div`
 const SectionLogo = styled.section`
   display: flex;
   height: 350px;
+
+  @media (max-width: 400px) {
+    margin-top: 3rem;
+  }
 `
 
 const Section = styled.section`
@@ -67,7 +71,7 @@ const Start = styled.button`
   font-weight: 800;
   background-color: #FFE061;
   border-radius: 2rem;
-  margin: auto;
+  margin: 0 auto;
   margin-top: 1rem;
   box-shadow: #fff;
   border: none;
