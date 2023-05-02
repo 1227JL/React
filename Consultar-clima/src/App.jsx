@@ -23,8 +23,25 @@ function App() {
     localStorage.setItem('lugar', JSON.stringify(lugar))
   },[lugar])
 
+  const resetData = ()=>{
+    localStorage.removeItem('lugar')
+  }
+
+  const Reset = styled.button`
+    background-color: transparent;
+    align-self: flex-end;
+    border: none;
+    position: absolute;
+    font-size: 1.1rem;
+    margin: 0.6rem 1rem ;
+    font-weight: 700;
+    color: #80B1FB;
+    cursor: pointer;
+  `
+
   return (
     <AppContainer>
+      <Reset onClick={resetData}>Reset</Reset>
       {pronosticar || Object.keys(lugar).length === 0 && <Index setPronosticar={setPronosticar} />}
       {cargando && <Spinner/>}
       {pronosticar && Object.keys(lugar).length === 0 && <Formulario lugar={lugar} setLugar={setLugar} />}
