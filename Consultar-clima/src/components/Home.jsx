@@ -23,6 +23,18 @@ const Container = styled.div`
     width: 100%;
     background-image: url(${BackgroundHome});
 `
+
+const Reset = styled.button`
+background-color: transparent;
+align-self: flex-end;
+border: none;
+position: absolute;
+font-size: 1.1rem;
+margin: 2rem 2rem ;
+font-weight: 700;
+color: #80B1FB;
+cursor: pointer;
+`
 const Header = styled.div`
     display: flex;
     flex-direction: column;
@@ -183,10 +195,13 @@ const HoursWeather = styled.div`
 
 const Home = ({lugar, setCargando}) => {
 
+    const resetData = ()=>{
+        localStorage.removeItem('lugar')
+    }    
+
     function capitalizeFirstLetter(str) {
         return str.charAt(0).toUpperCase() + str.substring(1);
     }
-    
     
     const {country, state, city} = lugar
     const [fecha, setFecha] = useState('')
@@ -276,6 +291,7 @@ const Home = ({lugar, setCargando}) => {
   return (
     <Container>
        <Header>
+      <Reset onClick={resetData}>Reset</Reset>
             <Location>
                 <img src={IconLocation} alt="" height={30} />
                 <h1>{city}</h1>
