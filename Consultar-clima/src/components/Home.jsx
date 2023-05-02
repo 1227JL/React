@@ -181,13 +181,13 @@ const HoursWeather = styled.div`
     }
 `
 
-const Home = ({lugar}) => {
+const Home = ({lugar, setCargando}) => {
 
     function capitalizeFirstLetter(str) {
         return str.charAt(0).toUpperCase() + str.substring(1);
     }
-
-
+    
+    
     const {country, state, city} = lugar
     const [fecha, setFecha] = useState('')
     const [lat, setLat] = useState('')
@@ -214,6 +214,7 @@ const Home = ({lugar}) => {
       }
 
     useEffect(() => {
+        setCargando(true)
         const fetchData = async () => {
           try {
             const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${city},${country}&key=8753cace746a4fc0b5eb41572e4ece19`);
@@ -248,7 +249,7 @@ const Home = ({lugar}) => {
             const hoursOfDay = Object.values(tutiempoData.hour_hour).filter(hour => hour.date === Object.values(tutiempoData.hour_hour)[0].date);
             setHoursDay(hoursOfDay);
             console.log(hoursOfDay);
-            
+            setCargando(false)
         }
         } catch (error) {
           console.error(error);
