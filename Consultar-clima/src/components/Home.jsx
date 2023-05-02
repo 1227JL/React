@@ -219,9 +219,9 @@ const Home = ({lugar, setCargando}) => {
         const fechaObj = new Date(fecha);
       
         // Extraer los componentes de la fecha y hora
-        const diaSemana = diasSemana[fechaObj.getUTCDay()];
-        const diaMes = fechaObj.getUTCDate();
-        const mes = meses[fechaObj.getUTCMonth()];
+        const diaSemana = diasSemana[fechaObj.getDay()];
+        const diaMes = fechaObj.getDate();
+        const mes = meses[fechaObj.getMonth()];
         const hora = fechaObj.getHours().toString().padStart(2, "0") + ":" + fechaObj.getUTCMinutes().toString().padStart(2, "0");
       
         // Devolver la fecha formateada
@@ -229,20 +229,21 @@ const Home = ({lugar, setCargando}) => {
       }
 
     useEffect(() => {
-        setCargando(true)
         const fetchData = async () => {
-          try {
+        try {
+            setCargando(true)
             const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${city},${country}&key=8753cace746a4fc0b5eb41572e4ece19`);
             const data = await response.json();
             console.log(data);
             setLat(data.results[0].geometry.lat);
             setLong(data.results[0].geometry.lng);
+            setCargando(false)
           } catch (error) {
             console.error(error);
           }
 
         };
-      
+        
         fetchData();
     }, []);
 
@@ -264,7 +265,6 @@ const Home = ({lugar, setCargando}) => {
             const hoursOfDay = Object.values(tutiempoData.hour_hour).filter(hour => hour.date === Object.values(tutiempoData.hour_hour)[0].date);
             setHoursDay(hoursOfDay);
             console.log(hoursOfDay);
-            setCargando(false)
         }
         } catch (error) {
           console.error(error);
