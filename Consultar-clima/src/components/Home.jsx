@@ -174,22 +174,31 @@ const Text = styled.div`
 const HoursWeather = styled.div`
     display: flex;
     justify-content: space-around;
-    width: 100%;
+    max-width:370px;
     margin: 1.1rem auto;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
     
     div{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 70px;
-        height: 110px;
+        height: 150px;
+        padding: 0px 10px;
         gap: 0.4rem;
         border-radius: 25px;
         background-image: url(${BackgroundHours});
         background-size: cover;
         color: white;
         font-weight: 600;
+        margin-left: 4px;
+    
+    }
+    div:first-child{
+        margin-left: 0px;
     }
 `
 
@@ -237,10 +246,9 @@ const Home = ({lugar, setCargando}) => {
             console.log(data);
             setLat(data.results[0].geometry.lat);
             setLong(data.results[0].geometry.lng);
-            setCargando(false)
-          } catch (error) {
+        } catch (error) {
             console.error(error);
-          }
+        }
 
         };
         
@@ -250,8 +258,8 @@ const Home = ({lugar, setCargando}) => {
     const fetchData = async () => {
         try {
           if (lat && long) {
-            const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
-            const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
+              const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
+              const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
             const openWeatherResponse = fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=hourly,daily&appid=89fde7a7310ef43c5b093fb42ca3f336`);
     
             const [timeZoneData, tutiempoData, openWeatherData] = await Promise.all([timeZoneResponse, tutiempoResponse, openWeatherResponse]).then(responses => Promise.all(responses.map(response => response.json())));
@@ -265,9 +273,10 @@ const Home = ({lugar, setCargando}) => {
             const hoursOfDay = Object.values(tutiempoData.hour_hour).filter(hour => hour.date === Object.values(tutiempoData.hour_hour)[0].date);
             setHoursDay(hoursOfDay);
             console.log(hoursOfDay);
+            setCargando(false)
         }
-        } catch (error) {
-          console.error(error);
+    } catch (error) {
+        console.error(error);
         }
     
     };
@@ -277,16 +286,26 @@ const Home = ({lugar, setCargando}) => {
     }, [lat, long]);
 
 
-    // Slider
+    const carousel = document.querySelector('.carousel')
 
-    const settings = {
-        dots: true,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 1,
-        centerMode: true,
-      };
+    let isDragStart = false, prevPageX, prevScrollLeft;
+
+    const dragStart = (e)=>{
+        isDragStart = true
+        prevPageX = e.pageX
+        prevScrollLeft = carousel.scrollLeft
+    }
+
+    const dragging = (e)=>{
+        if(!isDragStart) return;
+        e.preventDefault()
+        let positionDiff= e.pageX - prevPageX;
+        carousel.scrollLeft = prevScrollLeft-positionDiff;
+    }
+
+    const dragStop = ()=>{
+        isDragStart = false
+    }
 
   return (
     <Container>
@@ -331,7 +350,7 @@ const Home = ({lugar, setCargando}) => {
                 <span>Today</span>
                 <button>7-Pronósticos del día <img src={Arrow} alt="" height={14} /></button>
             </Text>
-            <HoursWeather>
+            <HoursWeather className='carousel' onMouseDown={dragStart} onMouseMove={dragging} onMouseUp={dragStop}> 
                 {/* <Slider {...settings}>  */}
                     {hoursDay.map((hour, index) => (
                         <div key={index}>
