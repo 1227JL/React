@@ -1,8 +1,5 @@
 import styled from '@emotion/styled'
 import style from '../Styles/Home.css'
-// import Slider from 'react-slick';
-// import 'slick-carousel/slick/slick.css';
-// import 'slick-carousel/slick/slick-theme.css';
 import BackgroundHome from '../img/BackgroundHome.jpg'
 import BackgroundGrades from '../img/BackgroundTemperatura.jpg'
 import IconLocation from '../img/IconoLocation.png'
@@ -14,7 +11,7 @@ import BackgroundHours from '../img/BackgroundHoursWeather.jpeg'
 import Arrow from '../img/arrow.png'
 import ThunderWeather from '../img/ThunderWeather.png'
 import { useState, useEffect } from 'react'
-// import { element } from 'prop-types'
+import WeekDays from './WeekDays'
 
 const Container = styled.div`
     display: flex;
@@ -59,20 +56,14 @@ const DateLocation = styled.span`
 const Temperatura = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 1.5rem auto 1rem 6rem;
+    margin: 1.5rem auto;
     border-radius: 1.6rem;
     border: 4px solid #5a8acd;
     color: #f7f7f7;
     font-size:11rem;
     font-weight:700;
     background-image: url(${BackgroundGrades});
-
-    @media (max-width: 400px ) {
-        height: 232px;
-        width: 70%;
-        margin: 1.5rem auto 1rem auto;
-
-    }
+    position: relative;
     
     span{
         display: flex;
@@ -90,14 +81,19 @@ const Temperatura = styled.div`
         font-size: 9rem;
         position: relative;
     }
-
+    
     img {
+        position: absolute;
+        z-index: 10;
+        bottom: -10px;
+        left: -33px;
+    }
+    
+    @media (max-width: 400px ) {
+        height: 232px;
+        width: 70%;
+        margin: 1.5rem auto 1rem auto;
 
-            position: absolute;
-            z-index: 10;
-            margin-top: 85px;
-            left: 2.15rem;
-        
     }
 `
 
@@ -136,10 +132,19 @@ const Datos = styled.div`
             color: #2F3A8F;
         }
     }
+
+    @media (min-width:800px){
+        width: 80%;
+    }
+
+    @media (min-width:900px){
+        width: 40%;
+    }
 `
 
 const WeatherDay = styled.div`
     display: flex;
+    justify-content: center;
     flex-direction: column;
     width: 90%;
     margin: 1.5rem auto;
@@ -148,6 +153,11 @@ const Text = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+
+    @media (min-width: 750px) {
+        width: 50%;
+        margin: auto;
+    }
     
     span{
         color: #2F3A8F;
@@ -164,22 +174,28 @@ const Text = styled.div`
         justify-content: center;
         align-items: center;
         gap: 2px;
+        cursor: pointer;
+
         img{
             margin-top: 2px;
         }
     }
-
-
 `
+
 const HoursWeather = styled.div`
     display: flex;
-    justify-content: space-around;
-    max-width:370px;
-    margin: 1.1rem auto;
+    justify-self: center;
+    max-width:365px;
+    margin: 1.1rem auto 1.1rem auto;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
     position: relative;
+    align-items: center;
+
+    @media (min-width: 750px) {
+        max-width:690px;
+    }
     
     div{
         display: flex;
@@ -187,7 +203,7 @@ const HoursWeather = styled.div`
         justify-content: center;
         align-items: center;
         height: 150px;
-        padding: 0px 10px;
+        min-width: 65px;
         gap: 0.4rem;
         border-radius: 25px;
         background-image: url(${BackgroundHours});
@@ -195,17 +211,17 @@ const HoursWeather = styled.div`
         color: white;
         font-weight: 600;
         margin-left: 4px;
-    
     }
-    div:first-child{
+    div:first-of-type{
         margin-left: 0px;
     }
 `
 
-const Home = ({lugar, setCargando}) => {
+const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
 
     const resetData = ()=>{
         localStorage.removeItem('lugar')
+        location.reload()
     }    
 
     function capitalizeFirstLetter(str) {
@@ -258,8 +274,8 @@ const Home = ({lugar, setCargando}) => {
     const fetchData = async () => {
         try {
           if (lat && long) {
-              const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
-              const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
+            const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
+            const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
             const openWeatherResponse = fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=hourly,daily&appid=89fde7a7310ef43c5b093fb42ca3f336`);
     
             const [timeZoneData, tutiempoData, openWeatherData] = await Promise.all([timeZoneResponse, tutiempoResponse, openWeatherResponse]).then(responses => Promise.all(responses.map(response => response.json())));
@@ -307,51 +323,55 @@ const Home = ({lugar, setCargando}) => {
         isDragStart = false
     }
 
-  return (
-    <Container>
-       <Header>
-      <Reset onClick={resetData}>Reset</Reset>
-            <Location>
-                <img src={IconLocation} alt="" height={30} />
-                <h1>{city}</h1>
-            </Location>
-            <DateLocation>{capitalizeFirstLetter(formatearFecha(fecha))}</DateLocation>
-       </Header>
-        <Temperatura>
-            <span>{parseInt(dataWeather.temp -273.15)}<p>°</p></span>
-            <img src={WeatherIcon} alt="" height={130} width={155} />
-        </Temperatura>
-        <Datos>
-            <div>
-                <div>
-                    <img src={WaterIcon} alt=""/>
-                    <span className='data'>{dataWeather.humidity}</span>
-                    <span>Humedad</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <img src={TempIcon} alt="" />
-                    <span className='data'>{dataWeather.pressure}</span>
-                    <span>Presion</span>
-                </div>
-            </div>
-            <div>
-                <div>
-                    <img src={AireIcon} alt="" />
-                    <span className='data'>{dataWeather.wind_speed}</span>
-                    <span>Viento</span>
-                </div>
-            </div>
-        </Datos>
+    const handleOpenWeekDays = ()=>{
+        setWeekDays(true)
+    }
 
-        <WeatherDay>
-            <Text>
-                <span>Today</span>
-                <button>7-Pronósticos del día <img src={Arrow} alt="" height={14} /></button>
-            </Text>
-            <HoursWeather className='carousel' onMouseDown={dragStart} onMouseMove={dragging} onMouseUp={dragStop}> 
-                {/* <Slider {...settings}>  */}
+  return (
+    <>
+        <Container>
+        <Header>
+        <Reset onClick={resetData}>Reset</Reset>
+                <Location>
+                    <img src={IconLocation} alt="" height={30} />
+                    <h1>{city}</h1>
+                </Location>
+                <DateLocation>{capitalizeFirstLetter(formatearFecha(fecha))}</DateLocation>
+        </Header>
+            <Temperatura>
+                <span>{parseInt(dataWeather.temp -273.15)}<p>°</p></span>
+                <img src={WeatherIcon} alt="" height={130} width={155} />
+            </Temperatura>
+            <Datos>
+                <div>
+                    <div>
+                        <img src={WaterIcon} alt=""/>
+                        <span className='data'>{dataWeather.humidity}</span>
+                        <span>Humedad</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img src={TempIcon} alt="" />
+                        <span className='data'>{dataWeather.pressure}</span>
+                        <span>Presion</span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img src={AireIcon} alt="" />
+                        <span className='data'>{dataWeather.wind_speed}</span>
+                        <span>Viento</span>
+                    </div>
+                </div>
+            </Datos>
+
+            <WeatherDay>
+                <Text>
+                    <span>Today</span>
+                    <button onClick={handleOpenWeekDays}>Pronósticos de 7 días <img src={Arrow} alt="" height={14} /></button>
+                </Text>
+                <HoursWeather className='carousel' onMouseDown={dragStart} onMouseMove={dragging} onMouseUp={dragStop}> 
                     {hoursDay.map((hour, index) => (
                         <div key={index}>
                             <span>{hour.hour_data}</span>
@@ -359,10 +379,11 @@ const Home = ({lugar, setCargando}) => {
                             <span>{hour.temperature}°</span>
                         </div>
                     ))}
-                {/* </Slider> */}
-            </HoursWeather>
-        </WeatherDay>
-    </Container>
+                </HoursWeather>
+            </WeatherDay>
+        </Container>
+        {weekDays && <WeekDays/>}
+    </>
   )
 }
 

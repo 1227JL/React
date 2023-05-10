@@ -4,15 +4,16 @@ import styled from '@emotion/styled'
 import IndexStyle from '../Styles/Index.css'
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
 `
 const SectionLogo = styled.section`
   display: flex;
   height: 350px;
+  margin-top: -6rem;
 
   @media (max-width: 400px) {
     margin-top: 3rem;

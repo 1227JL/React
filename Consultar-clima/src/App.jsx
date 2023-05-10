@@ -17,20 +17,19 @@ function App() {
   const [pronosticar, setPronosticar] = useState(false)
   const [lugar, setLugar] = useState(localStorage.getItem('lugar')?JSON.parse(localStorage.getItem('lugar')):{})
   const [cargando, setCargando] = useState(false)
+  const [weekDays, setWeekDays] = useState(false)
 
 
   useEffect(()=>{
     localStorage.setItem('lugar', JSON.stringify(lugar))
   },[lugar])
 
-
-
   return (
     <AppContainer>
       {pronosticar || Object.keys(lugar).length === 0 && <Index setPronosticar={setPronosticar} />}
       {cargando && <Spinner/>}
       {pronosticar && Object.keys(lugar).length === 0 && <Formulario lugar={lugar} setLugar={setLugar} />}
-      {Object.keys(lugar).length > 0 && <Home lugar={lugar} setCargando={setCargando} />}
+      {Object.keys(lugar).length > 0 && <Home lugar={lugar} setCargando={setCargando} weekDays={weekDays} setWeekDays={setWeekDays} />}
     </AppContainer>
   )
 }
