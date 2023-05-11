@@ -59,19 +59,28 @@ const Temperatura = styled.div`
     margin: 1.5rem auto;
     border-radius: 1.6rem;
     border: 4px solid #5a8acd;
-    color: #f7f7f7;
-    font-size:11rem;
-    font-weight:700;
     background-image: url(${BackgroundGrades});
     position: relative;
     
-    span{
+    span:first-of-type{
+        color: #f7f7f7;
+        font-size:11rem;
+        font-weight:700;
         display: flex;
         justify-content: center;
         margin-top: -13px;
         font-family: Arial, Helvetica, sans-serif;
         margin-left: 2rem;
         text-shadow: #337cfb 0px 24px 38px, #005eff 0px 20px 12px;
+    }
+    
+    .pronostico {
+        position: absolute;
+        font-size: 1.5rem;
+        color: #94BDFB;
+        font-weight:700;
+        bottom: 10px;
+        right: 10px;
     }
 
     span p{
@@ -93,8 +102,13 @@ const Temperatura = styled.div`
         height: 232px;
         width: 70%;
         margin: 1.5rem auto 1rem auto;
-
     }
+
+    @media (min-width: 400px ) {
+        height: 232px;
+        margin: 1.5rem auto 1rem auto;
+    }
+
 `
 
 const Datos = styled.div`
@@ -108,6 +122,7 @@ const Datos = styled.div`
     border-radius: 1.9rem;
     position: relative;
     box-shadow: rgba(19, 131, 200, 0.336) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+    transition: width .25s ease-in-out;
 
     div{
         display: flex;
@@ -133,12 +148,20 @@ const Datos = styled.div`
         }
     }
 
+    @media (min-width:470px){
+        width: 60%;
+    }
+
     @media (min-width:800px){
         width: 80%;
     }
 
     @media (min-width:900px){
-        width: 40%;
+        width: 55%;
+    }
+
+    @media (min-width:1200px){
+        width: 35%;
     }
 `
 
@@ -193,6 +216,10 @@ const HoursWeather = styled.div`
     position: relative;
     align-items: center;
 
+    @media (max-width: 450px) {
+        max-width:340px;
+    }
+
     @media (min-width: 750px) {
         max-width:690px;
     }
@@ -235,6 +262,7 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
     const [currentTime, setCurrentTime] = useState("");
     const [dataWeather, setDataWeather] = useState({})
     const [hoursDay, setHoursDay] = useState([])
+    const [dataWeekDays, setDataWeekDays] = useState([])
     
     function formatearFecha(fecha) {
         const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
@@ -254,9 +282,9 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
       }
 
     useEffect(() => {
+        setCargando(true)
         const fetchData = async () => {
         try {
-            setCargando(true)
             const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${city},${country}&key=8753cace746a4fc0b5eb41572e4ece19`);
             const data = await response.json();
             console.log(data);
@@ -284,10 +312,19 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
             console.log('tutiempo', tutiempoData);
             console.log('openWeather', openWeatherData);
             setDataWeather({humidity: openWeatherData.current.humidity, temp: openWeatherData.current.temp, pressure: openWeatherData.current.pressure, wind_speed: openWeatherData.current.wind_speed});
+            const weekDaysData = Object.entries(tutiempoData).filter(([key, value]) => key.includes('day')).map(([key, value]) => value);
+            setDataWeekDays(weekDaysData)
+            console.log('WeekDays', weekDaysData);
             setFecha(timeZoneData.formatted)
             setHoursDay(tutiempoData.hour_hour)
             const hoursOfDay = Object.values(tutiempoData.hour_hour).filter(hour => hour.date === Object.values(tutiempoData.hour_hour)[0].date);
-            setHoursDay(hoursOfDay);
+            const newData = hoursOfDay.map((element) => {
+                if (element.text.includes('nuboso')) {
+                  element.text = element.text.replace('nuboso', 'nubloso');
+                }
+                return element;
+            });
+            setHoursDay(newData);
             console.log(hoursOfDay);
             setCargando(false)
         }
@@ -327,6 +364,8 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
         setWeekDays(true)
     }
 
+    // console.log('data', dataWeekDays[0].text);
+
   return (
     <>
         <Container>
@@ -341,6 +380,7 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
             <Temperatura>
                 <span>{parseInt(dataWeather.temp -273.15)}<p>°</p></span>
                 <img src={WeatherIcon} alt="" height={130} width={155} />
+                <span className='pronostico'>{Object.keys(hoursDay).length > 0 ? hoursDay[0].text : ''}</span>
             </Temperatura>
             <Datos>
                 <div>
@@ -360,7 +400,7 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
                 <div>
                     <div>
                         <img src={AireIcon} alt="" />
-                        <span className='data'>{dataWeather.wind_speed}</span>
+                        <span className='data'>{dataWeather.wind_speed} km/h</span>
                         <span>Viento</span>
                     </div>
                 </div>
@@ -382,7 +422,7 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
                 </HoursWeather>
             </WeatherDay>
         </Container>
-        {weekDays && <WeekDays/>}
+        {weekDays && <WeekDays setWeekDays={setWeekDays} dataWeekDays={dataWeekDays}/> }
     </>
   )
 }
