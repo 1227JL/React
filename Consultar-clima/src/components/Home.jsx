@@ -13,6 +13,7 @@ import ThunderWeather from '../img/ThunderWeather.png'
 import { useState, useEffect } from 'react'
 import WeekDays from './WeekDays'
 import Menu from './Menu'
+import OtherCities from './OtherCities'
 
 const Container = styled.div`
     display: flex;
@@ -58,7 +59,7 @@ const Temperatura = styled.div`
     flex-direction: column;
     margin: 1.5rem auto;
     border-radius: 1.6rem;
-    border: 4px solid #5a8acd;
+    border: 4px solid #337cfb;
     background-image: url(${BackgroundGrades});
     position: relative;
     
@@ -117,7 +118,7 @@ const Datos = styled.div`
     justify-content: space-around;
     align-items: center;
     width: 88%;
-    height: 110px;
+    height: 100px;
     background-color: white;
     border-radius: 1.9rem;
     position: relative;
@@ -209,7 +210,7 @@ const HoursWeather = styled.div`
     display: flex;
     justify-self: center;
     max-width:365px;
-    margin: 1.1rem auto 1.1rem auto;
+    margin: 1.1rem auto 0rem auto;
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
@@ -229,7 +230,7 @@ const HoursWeather = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 150px;
+        height: 120px;
         min-width: 65px;
         gap: 0.4rem;
         border-radius: 25px;
@@ -416,6 +417,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
                     ))}
                 </HoursWeather>
             </WeatherDay>
+            <OtherCities></OtherCities>
         </Container>
         {weekDays && <WeekDays setWeekDays={setWeekDays} dataWeekDays={dataWeekDays}/> }
     </>

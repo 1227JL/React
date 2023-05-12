@@ -8,6 +8,7 @@ import WaterIcon from '../img/WaterIcon.png'
 import TempIcon from '../img/Sombrilla.png'
 import AireIcon from '../img/AireIcon.png'
 
+
 const Container = styled.div`
     display: flex;
     flex-direction: column;
@@ -32,16 +33,17 @@ const Content = styled.div`
 `
 const Text = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    width: 90%;
     margin: 20px auto;
     color: white;
     font-size: 1.4rem;
     font-weight: 600;
 
     img {
+        position: absolute;
         cursor: pointer;
+        left: 30px;
     }
 
     .menu {
@@ -60,6 +62,18 @@ const Info = styled.div`
     margin: 20px auto;
     border-radius: 30px;
     box-shadow: rgba(19, 131, 200, 0.336) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+
+    @media (min-width: 600px) {
+        width: 60%;
+    }
+
+    @media (min-width: 1000px) {
+        width: 50%;
+    }
+
+    @media (min-width: 1400px) {
+        width: 30%;
+    }
 
     .content-1{
         display: flex;
@@ -167,16 +181,24 @@ const Days = styled.div`
     gap: 30px;
     font-size: 1rem;
     margin: 120px auto;
+
+
 `
 const Day = styled.div`
     display: flex;
     justify-content: space-evenly;
     color: #b0bacb;
     font-weight: 600;
-    max-width: 400px;
-    div:nth-child(1) {
+
+    @media (min-width: 1000px) {
+        font-size: 1.2rem;
+        gap: 4rem;
+    }
+
+    div:nth-of-type() {
         width: 35px;
     }
+
     div:last-of-type{
         display: flex;
         gap: 10px;
@@ -215,11 +237,6 @@ const WeekDays = ({setWeekDays, dataWeekDays}) => {
                 <Text>
                     <img src={ArrowRight} alt="" height={20} onClick={CloseWeekDays} />
                     <span>Pronósticos de 7 días</span>
-                    <div className='menu'>
-                        <span>.</span>
-                        <span>.</span>
-                        <span>.</span>
-                    </div>
                 </Text>
                 <Info>
                     <div className='content-1'>
