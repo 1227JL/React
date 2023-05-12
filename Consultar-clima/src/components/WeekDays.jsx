@@ -10,6 +10,7 @@ import AireIcon from '../img/AireIcon.png'
 
 const Container = styled.div`
     display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100vh;
     background-image: url(${BackgroundHome});
@@ -62,8 +63,13 @@ const Info = styled.div`
 
     .content-1{
         display: flex;
-        margin: 36px auto;
+        margin: 30px auto 20px auto;
         gap: 20px;
+    }
+
+    .content-1 img {
+        margin-top: 15px;
+        top: 50%;
     }
 
     .tomorrow {
@@ -73,13 +79,14 @@ const Info = styled.div`
     }
 
     .tomorrow .day {
+        margin-top: 5px;
         font-size: 1.1rem;
         color: #B3BECE;
         font-weight: 600;
     }
 
     .tomorrow span {
-        color: #2F3A8F;
+        color: #3559C6;
     }
 
     .fromTo {
@@ -89,19 +96,26 @@ const Info = styled.div`
     }
     
     .from {
-        font-size: 3rem;
+        font-size: 4rem;
         color: #3559C6;
         font-weight: 700;
+        margin-top: -5px;
     }
     
     .to {
         position: absolute;
-        left: 40%;
-        top: 50%;
+        left: 50%;
+        top: 52%;
         font-size: 2rem;
         color: #3559C6;
         font-weight: 700;
         float: right;
+    }
+
+    .tomorrow .time {
+        margin-top: 2px;
+        color: #80B1FB;
+        font-weight: 600;
     }
 
     .content-1 .thunder img{
@@ -144,10 +158,54 @@ const Info = styled.div`
     }
 `
 
+const Days = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    gap: 30px;
+    font-size: 1rem;
+    margin: 120px auto;
+`
+const Day = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+    color: #b0bacb;
+    font-weight: 600;
+    max-width: 400px;
+    div:nth-child(1) {
+        width: 35px;
+    }
+    div:last-of-type{
+        display: flex;
+        gap: 10px;
+        width: 240px;
+        margin-left: 15px;
+    }
+`
+
 const WeekDays = ({setWeekDays, dataWeekDays}) => {
 
     const CloseWeekDays = ()=>{
         setWeekDays(false)
+    }
+
+    function formatearFecha(fecha) {
+        const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+        const diasSemanaAbreviados = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+      
+        // Analizar la cadena de fecha y hora en un objeto Date
+        const fechaObj = new Date(fecha);
+      
+        // Extraer los componentes de la fecha y hora
+        const diaSemana = fechaObj.getDay();
+      
+        // Obtener la abreviatura correspondiente al día de la semana
+        const diaSemanaAbreviado = diasSemanaAbreviados[diaSemana];
+      
+        // Devolver la fecha formateada
+        return diaSemanaAbreviado;
     }
 
   return (
@@ -174,7 +232,7 @@ const WeekDays = ({setWeekDays, dataWeekDays}) => {
                                 <span className='from'>{dataWeekDays[1].temperature_max}°</span>
                                 <span className='to'>/{dataWeekDays[1].temperature_min}°</span>
                             </div>
-                            <span>{dataWeekDays[1].text}</span>
+                            <span className='time'>{dataWeekDays[1].text}</span>
                         </div>
                     </div>
                     <div className='content-2'>
@@ -197,6 +255,25 @@ const WeekDays = ({setWeekDays, dataWeekDays}) => {
                 </Info>
             </Content>
         </Header>
+        <Days>
+            {dataWeekDays.map((day, index) =>{
+                if (day.text.includes('nuboso')) {
+                    day.text = day.text.replace('nuboso', 'nubloso');
+                }
+                return (
+                    <Day key={index}>
+                        <div>
+                            {formatearFecha(day.date)}
+                        </div>
+                        <div>
+                            <img src={Thunder} alt="" height={30} />
+                            <span>{day.text}</span>
+                        </div>
+                        <span>{day.temperature_max} / {day.temperature_min}</span>
+                    </Day>
+                )
+            })}
+        </Days>
     </Container>
   )
 }

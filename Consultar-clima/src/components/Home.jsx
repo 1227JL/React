@@ -12,6 +12,7 @@ import Arrow from '../img/arrow.png'
 import ThunderWeather from '../img/ThunderWeather.png'
 import { useState, useEffect } from 'react'
 import WeekDays from './WeekDays'
+import Menu from './Menu'
 
 const Container = styled.div`
     display: flex;
@@ -20,21 +21,20 @@ const Container = styled.div`
     width: 100%;
     background-image: url(${BackgroundHome});
 `
-
-const Reset = styled.button`
-background-color: transparent;
-align-self: flex-end;
-border: none;
-position: absolute;
-font-size: 1.1rem;
-margin: 2rem 2rem ;
-font-weight: 700;
-color: #80B1FB;
-cursor: pointer;
-`
 const Header = styled.div`
     display: flex;
     flex-direction: column;
+    .menu {
+        display: flex;
+        transform: rotate(-90deg);
+        position: absolute;
+        cursor: pointer;
+        color: #80B1FB;
+        font-weight: 600;
+        font-size: 1.4rem;
+        right: 20px;
+        top: 20px;
+    }
 `
 
 const Location = styled.div`
@@ -244,12 +244,7 @@ const HoursWeather = styled.div`
     }
 `
 
-const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
-
-    const resetData = ()=>{
-        localStorage.removeItem('lugar')
-        location.reload()
-    }    
+const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
 
     function capitalizeFirstLetter(str) {
         return str.charAt(0).toUpperCase() + str.substring(1);
@@ -279,7 +274,7 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
       
         // Devolver la fecha formateada
         return `${diaSemana}, ${diaMes} de ${mes}, ${fechaObj.getUTCFullYear()}, ${hora}`;
-      }
+    }
 
     useEffect(() => {
         setCargando(true)
@@ -370,12 +365,12 @@ const Home = ({lugar, setCargando, weekDays, setWeekDays}) => {
     <>
         <Container>
         <Header>
-        <Reset onClick={resetData}>Reset</Reset>
-                <Location>
-                    <img src={IconLocation} alt="" height={30} />
-                    <h1>{city}</h1>
-                </Location>
-                <DateLocation>{capitalizeFirstLetter(formatearFecha(fecha))}</DateLocation>
+            <Menu setPronosticar={setPronosticar}/>
+            <Location>
+                <img src={IconLocation} alt="" height={30} />
+                <h1>{city}</h1>
+            </Location>
+            <DateLocation>{capitalizeFirstLetter(formatearFecha(fecha))}</DateLocation>
         </Header>
             <Temperatura>
                 <span>{parseInt(dataWeather.temp -273.15)}<p>°</p></span>

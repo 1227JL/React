@@ -29,11 +29,9 @@ function App() {
       {pronosticar || Object.keys(lugar).length === 0 && <Index setPronosticar={setPronosticar} />}
       {cargando && <Spinner/>}
       {pronosticar && Object.keys(lugar).length === 0 && <Formulario lugar={lugar} setLugar={setLugar} />}
-      {Object.keys(lugar).length > 0 && <Home lugar={lugar} setCargando={setCargando} weekDays={weekDays} setWeekDays={setWeekDays} />}
+      {Object.keys(lugar).length > 0 && <Home setPronosticar={setPronosticar} lugar={lugar} setCargando={setCargando} weekDays={weekDays} setWeekDays={setWeekDays} />}
     </AppContainer>
   )
 }
 
 export default App
-
-rafce
