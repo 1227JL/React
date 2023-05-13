@@ -18,7 +18,7 @@ function App() {
   const [lugar, setLugar] = useState(localStorage.getItem('lugar')?JSON.parse(localStorage.getItem('lugar')):{})
   const [cargando, setCargando] = useState(false)
   const [weekDays, setWeekDays] = useState(false)
-
+  const [user, setUser] = useState({})
 
   useEffect(()=>{
     localStorage.setItem('lugar', JSON.stringify(lugar))

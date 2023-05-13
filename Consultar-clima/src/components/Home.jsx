@@ -34,7 +34,7 @@ const Header = styled.div`
         font-weight: 600;
         font-size: 1.4rem;
         right: 20px;
-        top: 20px;
+        top: 10px;
     }
 `
 
@@ -43,10 +43,18 @@ const Location = styled.div`
     justify-content: center;
     align-items: center;
     gap: 14px;
-    padding: 1.7rem;
+    padding: 1rem 1.7rem 1rem 1.7rem;
     color: #1F65C9;
     font-size: 0.9rem;
     font-weight: 900;
+
+    @media (max-width: 450px) {
+        padding: 1.7rem 1.7rem 1.7rem 1.7rem;
+    }
+
+    @media (min-width: 450px) {
+        padding: 1rem 1.7rem 1rem 1.7rem;
+    }
 `
 const DateLocation = styled.span`
     font-size: 1.1rem;
@@ -62,8 +70,13 @@ const Temperatura = styled.div`
     border: 4px solid #337cfb;
     background-image: url(${BackgroundGrades});
     position: relative;
+    height: 220px;
+    @media (min-width: 400px) {
+        padding-bottom: 20px;
+    }
     
     span:first-of-type{
+        text-align: center;
         color: #f7f7f7;
         font-size:11rem;
         font-weight:700;
@@ -76,12 +89,15 @@ const Temperatura = styled.div`
     }
     
     .pronostico {
+        text-align: center;
         position: absolute;
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         color: #94BDFB;
         font-weight:700;
-        bottom: 10px;
+        bottom: 0px;
         right: 10px;
+        max-width: 120px;
+
     }
 
     span p{
@@ -99,31 +115,27 @@ const Temperatura = styled.div`
         left: -33px;
     }
     
-    @media (max-width: 400px ) {
-        height: 232px;
-        width: 70%;
-        margin: 1.5rem auto 1rem auto;
-    }
-
     @media (min-width: 400px ) {
         height: 232px;
-        margin: 1.5rem auto 1rem auto;
+        margin: .5rem auto 1rem auto;
     }
 
 `
 
 const Datos = styled.div`
     display: flex;
-    margin: 0 auto;
+    margin: 0px auto;
     justify-content: space-around;
     align-items: center;
     width: 88%;
-    height: 100px;
+    height: 110px;
     background-color: white;
     border-radius: 1.9rem;
     position: relative;
     box-shadow: rgba(19, 131, 200, 0.336) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
     transition: width .25s ease-in-out;
+
+    
 
     div{
         display: flex;
@@ -149,20 +161,25 @@ const Datos = styled.div`
         }
     }
 
+
+    @media (max-width:400px){
+        margin: 10px auto;
+    }
     @media (min-width:470px){
         width: 60%;
+        padding: 10px 0px;
     }
 
     @media (min-width:800px){
-        width: 80%;
+        width: 60%;
     }
 
     @media (min-width:900px){
         width: 55%;
     }
-
+    
     @media (min-width:1200px){
-        width: 35%;
+        width: 55%;
     }
 `
 
@@ -171,7 +188,7 @@ const WeatherDay = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 90%;
-    margin: 1.5rem auto;
+    margin: 1rem auto 0rem auto;
 ` 
 const Text = styled.div`
     display: flex;
@@ -179,7 +196,7 @@ const Text = styled.div`
     justify-content: space-between;
 
     @media (min-width: 750px) {
-        width: 50%;
+        width: 60%;
         margin: auto;
     }
     
@@ -219,6 +236,10 @@ const HoursWeather = styled.div`
 
     @media (max-width: 450px) {
         max-width:340px;
+    }
+
+    @media (min-width: 400px) {
+        margin: .0rem auto;
     }
 
     @media (min-width: 750px) {
@@ -374,7 +395,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
             <DateLocation>{capitalizeFirstLetter(formatearFecha(fecha))}</DateLocation>
         </Header>
             <Temperatura>
-                <span>{parseInt(dataWeather.temp -273.15)}<p>°</p></span>
+                <span>{parseInt(dataWeather.temp - 273.15)}<p>°</p></span>
                 <img src={WeatherIcon} alt="" height={130} width={155} />
                 <span className='pronostico'>{Object.keys(hoursDay).length > 0 ? hoursDay[0].text : ''}</span>
             </Temperatura>
@@ -417,7 +438,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
                     ))}
                 </HoursWeather>
             </WeatherDay>
-            <OtherCities></OtherCities>
+            <OtherCities/>
         </Container>
         {weekDays && <WeekDays setWeekDays={setWeekDays} dataWeekDays={dataWeekDays}/> }
     </>
