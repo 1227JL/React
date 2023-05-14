@@ -71,8 +71,9 @@ const Temperatura = styled.div`
     background-image: url(${BackgroundGrades});
     position: relative;
     height: 220px;
+    width: 330px;
     @media (min-width: 400px) {
-        padding-bottom: 20px;
+        padding-bottom: 0px;
     }
     
     span:first-of-type{
@@ -91,12 +92,12 @@ const Temperatura = styled.div`
     .pronostico {
         text-align: center;
         position: absolute;
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         color: #94BDFB;
         font-weight:700;
-        bottom: 0px;
-        right: 10px;
-        max-width: 120px;
+        bottom: 10px;
+        right: 15px;
+        max-width: 150px;
 
     }
 
@@ -194,10 +195,11 @@ const Text = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    margin: auto auto 10px auto;
 
     @media (min-width: 750px) {
         width: 60%;
-        margin: auto;
+        margin: auto auto 10px auto;
     }
     
     span{
@@ -251,7 +253,7 @@ const HoursWeather = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 120px;
+        height: 110px;
         min-width: 65px;
         gap: 0.4rem;
         border-radius: 25px;
@@ -321,7 +323,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
           if (lat && long) {
             const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
             const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
-            const openWeatherResponse = fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=hourly,daily&appid=89fde7a7310ef43c5b093fb42ca3f336`);
+            const openWeatherResponse = fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=hourly,daily&appid=f200acf7d44619cca8cb67a2ace4d158`);
     
             const [timeZoneData, tutiempoData, openWeatherData] = await Promise.all([timeZoneResponse, tutiempoResponse, openWeatherResponse]).then(responses => Promise.all(responses.map(response => response.json())));
     
@@ -346,6 +348,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
             setCargando(false)
         }
     } catch (error) {
+        console.log('error');
         console.error(error);
         }
     

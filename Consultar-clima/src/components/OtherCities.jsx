@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import BackgroundCities from '../img/BackgroundCities.jpeg'
 import NormalClouds from '../img/NormalClouds.png'
 import IconLocation from '../img/IconoLocation.png'
-import { citiesPopular } from '../data/citiesPopular'
 import NewCity from './NewCity'
 
 const Container = styled.div`
@@ -117,53 +116,45 @@ const Content = styled.div`
     }
 
 `
-
-
 const OtherCities = () => {
     const [newCity, setNewCity] = useState(false)
     const [citiesAdds, setCitiesAdds] = useState([])
     const [city, setCity] = useState({})
 
-    function getContentBeforeComma(str) {
-        const index = str.lastIndexOf('/');
-        if (index !== -1) {
-          let substring = str.substring(index + 1).trim();
-          if (substring.includes('_')) {
-            substring = substring.replace(/_/g, ' ');
-          }
-          return substring;
-        }
-        return str.trim();
-    }
-
     const addNewCity = ()=>{
         setNewCity(true)
     }
 
-    const [tempCities, setTempCities] = useState([])
-    const fetchData = async () => {
-        try {
-          const openWeatherArray = await Promise.all(
-            citiesPopular.map(async (city) => {
-              const openWeatherResponse = await fetch(
-                `https://api.openweathermap.org/data/3.0/onecall?lat=${city.lat}&lon=${city.long}&exclude=hourly,daily&appid=89fde7a7310ef43c5b093fb42ca3f336`
-              );
-              const openWeatherData = await openWeatherResponse.json();
-              return openWeatherData;
-            })
-          );
-          console.log('openWeather', openWeatherArray);
+    const [tempCities, setTempCities] = useState([]);
+    const [names, setNames] = useState([]);
 
-          setTempCities(openWeatherArray)
-          // ...
-        } catch (error) {
-          console.error(error);
-        }
-    };
-    
     useEffect(() => {
+        const fetchData = async () => {
+          try {
+            if (Object.keys(city).length > 0) {
+              const response = await fetch(`https://api.opencagedata.com/geocode/v1/json?q=${city.city},${city.country}&key=8753cace746a4fc0b5eb41572e4ece19`);
+              const data = await response.json();
+              const cityAdd = { name: city.city, lat: data.results[0].geometry.lat, long: data.results[0].geometry.lng };
+              setCitiesAdds((prevCities) => [...prevCities, cityAdd]);
+              setNewCity(false);
+      
+              const openWeatherResponse = await fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${cityAdd.lat}&lon=${cityAdd.long}&exclude=hourly,daily&appid=f200acf7d44619cca8cb67a2ace4d158`);
+              const openWeatherData = await openWeatherResponse.json();
+              setTempCities((prevTempCities) => [...prevTempCities, openWeatherData]);
+            }
+            // ...
+          } catch (error) {
+            console.error(error);
+          }
+        };
+      
         fetchData();
-    }, [citiesPopular]);
+    }, [city]);
+
+    useEffect(() => {
+        const cityNames = citiesAdds.map((city) => city.name);
+        setNames(cityNames);
+    }, [citiesAdds]);
 
     const carousel2 = document.querySelector('.carousel2');
 
@@ -187,7 +178,6 @@ const OtherCities = () => {
     const dragStop2 = () => {
       isDragStart2 = false;
     };
-
   return (
     <Container>
         <Title>
@@ -195,25 +185,25 @@ const OtherCities = () => {
             <button onClick={addNewCity}>+</button>
         </Title>
         <Cities className='carousel2'  onMouseDown={dragStart2} onMouseMove={dragging2} onMouseUp={dragStop2}>
-            {tempCities.map((city, index)=>{
-                return (
-                    <City key={index}>
-                        <Content>
-                            <div className='cloud'>
-                                <img src={NormalClouds} alt="" height={50} width={85} />
-                            </div>
-                            <div>
-                                <div className='location'>
-                                    <img src={IconLocation} alt="" height={20} />
-                                    <span>{getContentBeforeComma(city.timezone)}</span>
-                                </div>
-                                <div className='time'>{city.current.weather[0].description}</div>
-                            </div>
-                            <span className='temp'>{parseInt(city.current.temp -  273.15)}°</span>
-                        </Content>
-                    </City>
-                )
-            })}
+        {tempCities.length > 0 && tempCities.map((city, index) => {
+            return (
+                <City key={index}>
+                <Content>
+                    <div className="cloud">
+                    <img src={NormalClouds} alt="" height={50} width={85} />
+                    </div>
+                    <div>
+                    <div className="location">
+                        <img src={IconLocation} alt="" height={20} />
+                        <span>{names[index]}</span>
+                    </div>
+                    <div className="time">{city.current.weather[0].description}</div>
+                    </div>
+                    <span className="temp">{parseInt(city.current.temp - 273.15)}°</span>
+                </Content>
+                </City>
+            );
+        })}
         </Cities>
         {newCity && <NewCity setNewCity={setNewCity} city={city} setCity={setCity}/>}
     </Container>

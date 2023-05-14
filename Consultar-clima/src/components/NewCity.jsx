@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Error from './Error'
 import axios from 'axios';
-import { citiesPopular } from '../data/citiesPopular';
 
 
 const Contenedor = styled.div`
@@ -173,7 +172,6 @@ const NewCity = ({setNewCity, city, setCity}) => {
       .then(response => {
         setCities(response.data);
   
-  
       })
       .catch(error => {
         console.log('Error al obtener ciudades: ', error);
@@ -194,10 +192,7 @@ const NewCity = ({setNewCity, city, setCity}) => {
         }, 3000);
         return
       }
-      setCity({ country: countrySelect, state: stateSelect, city: citySelect });
-      citiesPopular.push(city);
-      console.log("Ciudades", citiesPopular, city);
-      setNewCity(false)
+      setCity({ country: countrySelect, state: stateSelect, city: citySelect });;
     }
     
 
