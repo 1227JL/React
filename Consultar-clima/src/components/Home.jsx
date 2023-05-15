@@ -95,7 +95,7 @@ const Temperatura = styled.div`
         color: #94BDFB;
         font-weight:700;
         bottom: 10px;
-        right: -10px;
+        right: 10px;
         max-width: 210px;
 
     }
