@@ -96,6 +96,24 @@ const Enviar = styled.input`
     cursor: pointer;
   }
 `
+const Close = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 10px;
+  z-index: 10;
+  border-radius: 100%;
+  span{
+    font-size: 1.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+  }
+`
+
 const NewCity = ({setNewCity, city, setCity}) => {
     const [countries, setCountries] = useState([]);
     const [states, setStates] = useState([]);
@@ -194,10 +212,17 @@ const NewCity = ({setNewCity, city, setCity}) => {
       }
       setCity({ country: countrySelect, state: stateSelect, city: citySelect });;
     }
+
+    const CloseModal = ()=>{
+      setNewCity(false)
+    }
     
 
   return (
     <Contenedor className='bg'>
+      <Close onClick={CloseModal}>
+        <span>X</span>  
+      </Close>
       <div className='sub-container'>
         <Title><h1>Elige una Ubicación</h1></Title>
         <Form onSubmit={handleSubmit}>
@@ -232,7 +257,8 @@ const NewCity = ({setNewCity, city, setCity}) => {
               {cities.length == 0 && <option>{stateSelect}</option>}
             </select>
           </ContenedorSelect>
-          <Enviar type="submit" value='Enviar Ubicación' />
+          <Enviar type="submit" value='Enviar Ubicación'
+           />
         </Form>
       </div>
     </Contenedor>
