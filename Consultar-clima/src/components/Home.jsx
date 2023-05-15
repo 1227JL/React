@@ -320,7 +320,7 @@ const Home = ({setPronosticar, lugar, setCargando, weekDays, setWeekDays}) => {
     const fetchData = async () => {
         try {
           if (lat && long) {
-            const timeZoneResponse = fetch(`http://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
+            const timeZoneResponse = fetch(`https://api.timezonedb.com/v2.1/get-time-zone?key=MLZF9VDS6IBQ&format=json&by=position&lat=${lat}&lng=${long}`);
             const tutiempoResponse = fetch(`https://api.tutiempo.net/json/?lan=es&apid=q5Ea4azqaqzgrbW&ll=${lat},${long}`);
             const openWeatherResponse = fetch(`https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=hourly,daily&appid=4907c56f8a9c6de8ccf6ddf7f4c9169d`);
     
