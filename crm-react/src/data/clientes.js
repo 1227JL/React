@@ -8,6 +8,15 @@ export async function obtenerClientes(){
 
 }
 
+export async function obtenerCliente(id){
+    
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/${id}`)
+    const resultado = await response.json()
+
+    return resultado;
+
+}
+
 export async function agregarCliente(datos){
 
     try{
@@ -23,4 +32,8 @@ export async function agregarCliente(datos){
         console.error(error);
     }
 
+}
+
+export async function actualizarCliente(id, datos) {
+    
 }
