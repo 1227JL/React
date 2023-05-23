@@ -23,7 +23,7 @@ const Title = styled.div`
     margin: 0px auto 15px auto;
 
     @media (min-width: 600px) {
-        width: 90%;
+        width: 80%;
     }
 
     span{
@@ -58,7 +58,7 @@ const Cities = styled.div`
     padding: 0 25px;
 
     @media (min-width: 700px) {
-        max-width: 880px;
+        max-width: 940px;
     }
 
 `
@@ -66,7 +66,7 @@ const Cities = styled.div`
 const City = styled.div`
     display: flex;
     border-radius: 30px;
-    width: 300px;
+    width: 270px;
     padding: 0px 80px 0px 20px;
     height: 70px;
     background-image: url(${BackgroundCities});
@@ -114,6 +114,7 @@ const Content = styled.div`
         font-size: 1.5rem;
         color: #FFE061;
         font-weight: 700;
+        padding: 0px 10px;
     }
 
 `

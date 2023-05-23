@@ -1,15 +1,16 @@
 import React from 'react'
 import WeatherLogo from '../img/WeatherLogo.png'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled'  //LIBRERIA -  SIRVE PARA IMPLEMENTAR CODIGO CSS POR MEDIO DE VARIABLES
 import IndexStyle from '../Styles/Index.css'
 
-const Container = styled.div`
+const Container = styled.div` 
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100vh;
     justify-content: center;
 `
+
 const SectionLogo = styled.section`
   display: flex;
   height: 350px;

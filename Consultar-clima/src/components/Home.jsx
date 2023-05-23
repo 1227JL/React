@@ -55,6 +55,9 @@ const Location = styled.div`
     @media (min-width: 450px) {
         padding: 1rem 1.7rem 1rem 1.7rem;
     }
+    @media (min-width: 700px) {
+        padding: 1rem 1.7rem 1.7rem 1.7rem;
+    }
 `
 const DateLocation = styled.span`
     font-size: 1.1rem;
